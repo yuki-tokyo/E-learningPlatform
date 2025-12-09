@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/AuthService/">
+    <Project Path="AuthService.API/AuthService.API.csproj" Id="80169dfa-dbd7-4526-adec-25e66e14eb3c" />
+    <Project Path="AuthService.Application/AuthService.Application.csproj" Id="5b13b5bd-e9b4-4878-a03b-d5bff9292993" />
+    <Project Path="AuthService.Domain/AuthService.Domain.csproj" Id="3895251c-e6d7-4b3d-a85e-0081ab442e15" />
+    <Project Path="AuthService.Infrastructure/AuthService.Infrastructure.csproj" Id="bb814a9f-4ed0-4282-beb8-a7ca67fa6f2c" />
+  </Folder>
+</Solution>
