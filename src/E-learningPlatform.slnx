@@ -4,5 +4,13 @@
     <Project Path="AuthService.Application/AuthService.Application.csproj" Id="5b13b5bd-e9b4-4878-a03b-d5bff9292993" />
     <Project Path="AuthService.Domain/AuthService.Domain.csproj" Id="3895251c-e6d7-4b3d-a85e-0081ab442e15" />
     <Project Path="AuthService.Infrastructure/AuthService.Infrastructure.csproj" Id="bb814a9f-4ed0-4282-beb8-a7ca67fa6f2c" />
+    <Project Path="AuthService.Protos/AuthService.Protos.csproj" Id="d933e215-eb4e-4174-aa7c-50df5bd2e47b" />
+  </Folder>
+  <Folder Name="/EmailService/">
+    <Project Path="EmailService.API/EmailService.API.csproj" Id="81ef623a-8e37-4ad4-abf7-f64682e6fc9e" />
+    <Project Path="EmailService.Application/EmailService.Application.csproj" Id="999f9fd8-427f-4293-98f9-2d339d56c37a" />
+    <Project Path="EmailService.Domain/EmailService.Domain.csproj" Id="ec120357-3850-420e-817c-4a80a0ae2ba1" />
+    <Project Path="EmailService.Infrastructure/EmailService.Infrastructure.csproj" Id="c0bdf302-8af9-4ad1-8358-81a3da0aed2a" />
+    <Project Path="EmailService.Protos/EmailService.Protos.csproj" Id="5f3f75bf-39e2-4d98-bf1d-f73f6fe76da1" />
   </Folder>
 </Solution>

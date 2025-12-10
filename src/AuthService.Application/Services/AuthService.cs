@@ -1,8 +1,6 @@
-﻿using AuthService.Domain.Entities;
-using AuthService.Domain.Exceptions;
+﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces;
-using AuthService.Domain.Interfaces.Email;
-using BCrypt.Net;
+using AuthService.Domain.Interfaces.gRPC;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
@@ -15,18 +13,21 @@ namespace AuthService.Application.Services
     {
         private readonly IAuthRepository repos;
         private readonly IJwtService jwt;
-        private readonly IEmailVerifyService verify;
-        private readonly IVerifyRepository vrepos;
+        private readonly IEmailClientForAuth emailClient;
         public AuthService(IAuthRepository repos, 
             IJwtService jwt,
-            IEmailVerifyService verify,
-            IVerifyRepository vrepos)
+            IEmailClientForAuth emailClient)
         {
             this.repos = repos;
             this.jwt = jwt;
-            this.verify = verify;
-            this.vrepos = vrepos;
+            this.emailClient = emailClient;
         }
+
+        public async Task AddUser(string name, string email, string pass)
+        {
+            await repos.Register(name, email, pass);
+        }
+
         public async Task<string> Login(string email, string pass)
         {
             var user = await repos.Login(email, pass);
@@ -42,13 +43,12 @@ namespace AuthService.Application.Services
             var result = await repos.IsThisEmailRegistered(email);
             if (result)
             {
-                throw new UserAlreadyExistsException("Данные уже используются другим пользователем.");
+                throw new UserAlreadyExistsException("Данный email уже занят.");
             }
             var code = new Random().Next(100000, 999999).ToString();
-            var verif = new Verification { Code = code, UserEmail = email, UserName = name, UserPassword = pass };
-            await vrepos.AddVerification(verif);
-            await verify.SendVerificationCode(email, code);
-            return "Код отправлен вам на почту!";
+            await emailClient.AddVerification(code, name, email, pass);
+            var msg = await emailClient.SendCode(email, code);
+            return msg;
         }
     }
 }

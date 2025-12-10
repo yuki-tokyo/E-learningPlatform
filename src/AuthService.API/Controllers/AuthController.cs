@@ -1,6 +1,7 @@
 ﻿using AuthService.Application.DTO.Requests;
 using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
+using EmailService.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml;
@@ -12,9 +13,11 @@ namespace AuthService.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthGrpcClient client;
-        public AuthController(IAuthGrpcClient client)
+        private readonly IEmailClientForAuth emailClient;
+        public AuthController(IAuthGrpcClient client, IEmailClientForAuth emailClient)
         {
             this.client = client;
+            this.emailClient = emailClient;
         }
 
         [HttpPost("register")]
@@ -58,7 +61,7 @@ namespace AuthService.API.Controllers
         {
             try
             {
-                var msg = await client.Verify(dto.Email, dto.Code);
+                var msg = await emailClient.VerifyEmail(dto.Email, dto.Code);
                 return Ok(msg);
             }
             catch (VerificationException ex)

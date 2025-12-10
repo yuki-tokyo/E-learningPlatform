@@ -15,18 +15,12 @@
     </PackageReference>
   </ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="gRPC\Protos\auth.proto" GrpcServices="Server" />
-	</ItemGroup>
-
   <ItemGroup>
-    <Folder Include="gRPC\Protos\" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ProjectReference Include="..\AuthService.Protos\AuthService.Protos.csproj" />
     <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj" />
     <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
     <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj" />
+    <ProjectReference Include="..\EmailService.Domain\EmailService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AuthService.Infrastructure.Data.Migrations
 {
-    [DbContext(typeof(DatabaseConnect))]
+    [DbContext(typeof(AuthDb))]
     [Migration("20251210112756_AddedVerification")]
     partial class AddedVerification
     {

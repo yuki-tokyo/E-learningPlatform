@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Text;
 using LoginRequest = AuthService.Protos.LoginRequest;
 using RegisterRequest = AuthService.Protos.RegisterRequest;
-using VerifyRequest = AuthService.Protos.VerifyRequest;
 
 namespace AuthService.Infrastructure.gRPC.Clients
 {
@@ -53,25 +52,6 @@ namespace AuthService.Infrastructure.gRPC.Clients
             catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
             {
                 throw new UserAlreadyExistsException(ex.Status.Detail);
-            }
-            catch (RpcException ex)
-            {
-                throw new Exception($"Error: {ex}");
-            }
-        }
-
-        public async Task<string> Verify(string email, string code)
-        {
-            try
-            {
-                var request = new VerifyRequest { Email = email, Code = code };
-                var response = await client.VerifyAsync(request);
-
-                return response.Msg;
-            }
-            catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
-            {
-                throw new VerificationException(ex.Status.Detail);
             }
             catch (RpcException ex)
             {

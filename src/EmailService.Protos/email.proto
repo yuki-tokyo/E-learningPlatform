@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "EmailService.Protos";
+
+package email;
+
+service EmailApi {
+  rpc SendCode (SendCodeRequest) returns (SendCodeResponse);
+  rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse);
+  rpc AddVerification (AddVerificationRequest) returns (AddVerificationResponse);
+}
+
+// Requests
+message SendCodeRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message VerifyEmailRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message AddVerificationRequest {
+  string code = 1;
+  string username = 2;
+  string useremail = 3;
+  string userpassword = 4;
+}
+
+// Responses
+message SendCodeResponse {
+  string msg = 1;
+}
+
+message VerifyEmailResponse {
+  string msg = 1;
+}
+
+message AddVerificationResponse { }

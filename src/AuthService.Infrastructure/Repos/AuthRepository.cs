@@ -10,9 +10,9 @@ namespace AuthService.Infrastructure.Repos
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly IDbContextFactory<DatabaseConnect> factory;
+        private readonly IDbContextFactory<AuthDb> factory;
 
-        public AuthRepository(IDbContextFactory<DatabaseConnect> factory)
+        public AuthRepository(IDbContextFactory<AuthDb> factory)
         {
             this.factory = factory;
         }

@@ -1,5 +1,5 @@
-using AuthService.API.gRPC.Services;
-using AuthService.Infrastructure.Extensions;
+using EmailService.API.gRPC.Services;
+using EmailService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapGrpcService<AuthGrpcServer>();
+app.MapGrpcService<EmailGrpcServer>();
 
 app.UseHttpsRedirection();
 

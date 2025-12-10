@@ -8,5 +8,6 @@ namespace AuthService.Domain.Interfaces
     {
         Task<string> Register(string name, string email, string pass);
         Task<string> Login(string email, string pass);
+        Task AddUser(string name, string email, string pass);
     }
 }

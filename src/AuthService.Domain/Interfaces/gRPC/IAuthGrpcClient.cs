@@ -8,6 +8,5 @@ namespace AuthService.Domain.Interfaces.gRPC
     {
         Task<string> Login(string email, string pass);
         Task<string> Register(string email, string name, string pass);
-        Task<string> Verify(string email, string code);
     }
 }
