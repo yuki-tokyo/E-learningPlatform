@@ -14,9 +14,20 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+	<PackageReference Include="Grpc.Net.ClientFactory" Version="2.71.0" />
+	<PackageReference Include="Google.Protobuf" Version="3.29.3" />
+	<PackageReference Include="Grpc.Tools" Version="2.71.0">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="../AuthService.API/gRPC/Protos/auth.proto" GrpcServices="Client" />
+	</ItemGroup>
+
+
+	<ItemGroup>
     <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj" />
     <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
   </ItemGroup>

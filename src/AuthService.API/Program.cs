@@ -43,22 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // gRPC Server
 builder.Services.AddGrpc();
 
-// gRPC Client
-builder.Services.AddGrpcClient<AuthApi.AuthApiClient>(o =>
-{
-    o.Address = new Uri("https://localhost:3001");
-})
-.ConfigurePrimaryHttpMessageHandler(() =>
-{
-    var handler = new HttpClientHandler();
-    // Ignore SSL 
-    handler.ServerCertificateCustomValidationCallback =
-        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-    return handler;
-});
-
-builder.Services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

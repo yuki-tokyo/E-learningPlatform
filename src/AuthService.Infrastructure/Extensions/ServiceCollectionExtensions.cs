@@ -2,15 +2,18 @@
 using AuthService.Application.Services.Email;
 using AuthService.Domain.Interfaces;
 using AuthService.Domain.Interfaces.Email;
+using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Infrastructure.Data;
+using AuthService.Infrastructure.gRPC.Clients;
 using AuthService.Infrastructure.Repos;
+using AuthService.Protos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AppAuthService = AuthService.Application.Services.AuthService;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AppAuthService = AuthService.Application.Services.AuthService;
 
 namespace AuthService.Infrastructure.Extensions
 {
@@ -32,6 +35,22 @@ namespace AuthService.Infrastructure.Extensions
                     configuration.GetConnectionString("Postgres"),
                     b => b.MigrationsAssembly(typeof(DatabaseConnect).Assembly.FullName)),
                     lifetime: ServiceLifetime.Scoped);
+
+            // gRPC Client
+            services.AddGrpcClient<AuthApi.AuthApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3001");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+            // DI for client
+            services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
 
             // DI-containers
             // Repositories

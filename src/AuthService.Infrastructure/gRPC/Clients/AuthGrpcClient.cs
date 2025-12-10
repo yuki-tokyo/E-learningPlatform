@@ -1,11 +1,19 @@
-﻿using AuthService.Domain.Exceptions;
+﻿using AuthService.Application.DTO.Requests;
+using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Protos;
 using Grpc.Core;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using LoginRequest = AuthService.Protos.LoginRequest;
+using RegisterRequest = AuthService.Protos.RegisterRequest;
+using VerifyRequest = AuthService.Protos.VerifyRequest;
 
-namespace AuthService.API.gRPC.Services
+namespace AuthService.Infrastructure.gRPC.Clients
 {
-/*    public class AuthGrpcClient : IAuthGrpcClient
+    public class AuthGrpcClient : IAuthGrpcClient
     {
         private readonly AuthApi.AuthApiClient client;
 
@@ -70,5 +78,5 @@ namespace AuthService.API.gRPC.Services
                 throw new Exception($"Error: {ex}");
             }
         }
-    }*/
+    }
 }
