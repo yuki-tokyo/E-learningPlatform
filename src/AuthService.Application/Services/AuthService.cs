@@ -1,5 +1,7 @@
-﻿using AuthService.Domain.Exceptions;
+﻿using AuthService.Domain.Entities;
+using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces;
+using AuthService.Domain.Interfaces.Email;
 using BCrypt.Net;
 using System;
 using System.Collections.Generic;
@@ -13,15 +15,22 @@ namespace AuthService.Application.Services
     {
         private readonly IAuthRepository repos;
         private readonly IJwtService jwt;
-        public AuthService(IAuthRepository repos, IJwtService jwt)
+        private readonly IEmailVerifyService verify;
+        private readonly IVerifyRepository vrepos;
+        public AuthService(IAuthRepository repos, 
+            IJwtService jwt,
+            IEmailVerifyService verify,
+            IVerifyRepository vrepos)
         {
             this.repos = repos;
             this.jwt = jwt;
+            this.verify = verify;
+            this.vrepos = vrepos;
         }
         public async Task<string> Login(string email, string pass)
         {
             var user = await repos.Login(email, pass);
-            if(user == null)
+            if (user == null)
             {
                 throw new InvalidCredentialsException("Пользователь не найден/данные некорректны.");
             }
@@ -35,9 +44,11 @@ namespace AuthService.Application.Services
             {
                 throw new UserAlreadyExistsException("Данные уже используются другим пользователем.");
             }
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(pass);
-            var user = await repos.Register(name, email, hashedPassword);
-            return await jwt.GenerateJwtToken(user);
+            var code = new Random().Next(100000, 999999).ToString();
+            var verif = new Verification { Code = code, UserEmail = email, UserName = name, UserPassword = pass };
+            await vrepos.AddVerification(verif);
+            await verify.SendVerificationCode(email, code);
+            return "Код отправлен вам на почту!";
         }
     }
 }

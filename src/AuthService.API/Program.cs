@@ -1,6 +1,8 @@
 using AuthService.API.gRPC.Services;
 using AuthService.Application.Services;
-using AuthService.Domain.Interfaces;
+using AuthService.Application.Services.Email;
+using AuthService.Domain.Interfaces.Email;
+using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Infrastructure.Data;
 using AuthService.Infrastructure.Extensions;
 using AuthService.Infrastructure.Repos;
@@ -12,13 +14,11 @@ using AppAuthService = AuthService.Application.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
-//DB
+// Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Jwt
@@ -57,16 +57,10 @@ builder.Services.AddGrpcClient<AuthApi.AuthApiClient>(o =>
     return handler;
 });
 
-
-// DI-containers
 builder.Services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IAuthService, AppAuthService>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

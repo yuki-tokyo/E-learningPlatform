@@ -1,0 +1,40 @@
+﻿using AuthService.Domain.Entities;
+using AuthService.Domain.Interfaces.Email;
+using AuthService.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml.Linq;
+
+namespace AuthService.Infrastructure.Repos
+{
+    public class VerifyRepository : IVerifyRepository
+    {
+        private readonly IDbContextFactory<DatabaseConnect> factory;
+
+        public VerifyRepository(IDbContextFactory<DatabaseConnect> factory)
+        {
+            this.factory = factory;
+        }
+
+        public async Task AddVerification(Verification verif)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            await db.Verifications.AddAsync(verif);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<Verification?> FindVerification(string email)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            var verif = await db.Verifications
+                .AsNoTracking()
+                .FirstOrDefaultAsync(v => v.UserEmail == email);
+
+            return verif;
+        }
+    }
+}

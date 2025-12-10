@@ -10,19 +10,21 @@ namespace AuthService.Infrastructure.Repos
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly DatabaseConnect db;
-        private readonly IJwtService jwt;
-        public AuthRepository(DatabaseConnect db, IJwtService jwt)
+        private readonly IDbContextFactory<DatabaseConnect> factory;
+
+        public AuthRepository(IDbContextFactory<DatabaseConnect> factory)
         {
-            this.db = db;
-            this.jwt = jwt;
+            this.factory = factory;
         }
 
         public async Task<bool> IsThisEmailRegistered(string email)
         {
+            await using var db = await factory.CreateDbContextAsync();
+
             try
             {
                 var user = await db.Users
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(u => u.Email == email);
 
                 return user != null;
@@ -36,25 +38,30 @@ namespace AuthService.Infrastructure.Repos
 
         public async Task<User?> Login(string email, string pass)
         {
-            var user = await db
-                .Users
-                .FirstOrDefaultAsync
-                (u => u.Email == email);
+            await using var db = await factory.CreateDbContextAsync();
+
+            var user = await db.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == email);
+
             if (user == null)
             {
                 return null;
             }
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(pass, user.Password);
 
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(pass, user.Password);
             return isPasswordValid ? user : null;
         }
 
-        public async Task<User> Register(string name, string email, string pass)
+        public async Task Register(string name, string email, string pass)
         {
-            var user = new User { Name = name, Email = email, Password = pass };
+            await using var db = await factory.CreateDbContextAsync();
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(pass);
+            var user = new User { Name = name, Email = email, Password = hashedPassword , IsEmailVerified = true};
+
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
-            return user;
         }
     }
 }

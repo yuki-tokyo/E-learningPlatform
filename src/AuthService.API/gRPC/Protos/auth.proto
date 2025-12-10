@@ -5,8 +5,9 @@ option csharp_namespace = "AuthService.Protos";
 package auth;
 
 service AuthApi {
-  rpc Register (RegisterRequest) returns (JwtTokenResponse);
+  rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (JwtTokenResponse);
+  rpc Verify (VerifyRequest) returns (VerifyResponse);
 }
 
 
@@ -20,7 +21,19 @@ message LoginRequest {
   string email = 2;
   string password = 3;
 }
+message VerifyRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message VerifyResponse {
+  string msg = 1;
+}
 
 message JwtTokenResponse {
   string token = 1;
+}
+
+message RegisterResponse {
+  string msg = 1;
 }

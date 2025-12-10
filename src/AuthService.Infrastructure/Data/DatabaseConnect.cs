@@ -11,5 +11,6 @@ namespace AuthService.Infrastructure.Data
         public DatabaseConnect(DbContextOptions<DatabaseConnect> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Verification> Verifications { get; set; }
     }
 }

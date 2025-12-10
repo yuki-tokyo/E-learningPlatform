@@ -1,6 +1,6 @@
-﻿using AuthService.Application.DTO;
+﻿using AuthService.Application.DTO.Requests;
 using AuthService.Domain.Exceptions;
-using AuthService.Domain.Interfaces;
+using AuthService.Domain.Interfaces.gRPC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml;
@@ -18,12 +18,12 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO dto)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest dto)
         {
             try
             {
-                var token = await client.Register(dto.Email, dto.Name, dto.Password);
-                return Ok(token);
+                var msg = await client.Register(dto.Email, dto.Name, dto.Password);
+                return Ok(msg);
             }
             catch (UserAlreadyExistsException ex)
             {
@@ -36,7 +36,7 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO dto)
+        public async Task<IActionResult> Login([FromBody] LoginRequest dto)
         {
             try
             {
@@ -44,6 +44,24 @@ namespace AuthService.API.Controllers
                 return Ok(token);
             }
             catch (InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
+            }
+        }
+
+        [HttpPost("verify")]
+        public async Task<IActionResult> Verify([FromBody] VerifyRequest dto)
+        {
+            try
+            {
+                var msg = await client.Verify(dto.Email, dto.Code);
+                return Ok(msg);
+            }
+            catch (VerificationException ex)
             {
                 return BadRequest(ex.Message);
             }

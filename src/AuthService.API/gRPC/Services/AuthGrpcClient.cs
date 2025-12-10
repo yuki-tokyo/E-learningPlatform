@@ -1,5 +1,5 @@
 ﻿using AuthService.Domain.Exceptions;
-using AuthService.Domain.Interfaces;
+using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Protos;
 using Grpc.Core;
 
@@ -40,11 +40,30 @@ namespace AuthService.API.gRPC.Services
                 var request = new RegisterRequest { Email = email, Password = pass, Name = name };
                 var response = await client.RegisterAsync(request);
 
-                return response.Token;
+                return response.Msg;
             }
             catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
             {
                 throw new UserAlreadyExistsException(ex.Status.Detail);
+            }
+            catch (RpcException ex)
+            {
+                throw new Exception($"Error: {ex}");
+            }
+        }
+
+        public async Task<string> Verify(string email, string code)
+        {
+            try
+            {
+                var request = new VerifyRequest { Email = email, Code = code };
+                var response = await client.VerifyAsync(request);
+
+                return response.Msg;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
+            {
+                throw new VerificationException(ex.Status.Detail);
             }
             catch (RpcException ex)
             {
