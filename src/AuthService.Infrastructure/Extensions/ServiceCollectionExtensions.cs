@@ -37,11 +37,13 @@ namespace AuthService.Infrastructure.Extensions
             // Repositories
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IVerifyRepository, VerifyRepository>();
+            services.AddScoped<IVerificationCleanupRepository, VerificationCleanupRepository>();
             //Services
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AppAuthService>();
             services.AddScoped<IEmailVerifyService, EmailVerifyService>();
             services.AddScoped<IVerifyService, VerifyService>();
+            services.AddHostedService<VerificationCleanupService>();
 
             return services;
         }
