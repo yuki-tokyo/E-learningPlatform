@@ -1,9 +1,13 @@
 ﻿using AuthService.Application.Services;
+using AuthService.Application.Services.Account;
 using AuthService.Domain.Interfaces;
+using AuthService.Domain.Interfaces.Account.Repos;
+using AuthService.Domain.Interfaces.Account.Services;
 using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Infrastructure.Data;
 using AuthService.Infrastructure.gRPC.Clients;
 using AuthService.Infrastructure.Repos;
+using AuthService.Infrastructure.Repos.Account;
 using AuthService.Protos;
 using EmailService.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -43,9 +47,11 @@ namespace AuthService.Infrastructure.Extensions
             // DI-containers
             // Repositories
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             // Services
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AppAuthService>();
+            services.AddScoped<IAccountService, AccountService>();
             // Clients
             services.AddScoped<IEmailClientForAuth, EmailClientForAuth>();
             services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();

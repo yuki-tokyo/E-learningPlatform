@@ -1,7 +1,7 @@
-using AuthService.API.gRPC.Services;
-using AuthService.Infrastructure.Extensions;
+using AccountService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllers();
 
@@ -17,10 +17,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.MapGrpcService<AuthGrpcServer>();
-
-app.MapGrpcService<AccountGrpcServer>();
 
 app.UseHttpsRedirection();
 

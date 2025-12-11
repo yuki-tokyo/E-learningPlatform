@@ -2,7 +2,6 @@
 using AuthService.Application.DTO.Responses;
 using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
-using EmailService.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Buffers.Text;
@@ -31,11 +30,15 @@ namespace AuthService.API.Controllers
                 var response = new RegisterResponse { Msg = "Код успешно отправлен на почту!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                response.Links.Add(new ApiLink { Rel = "verify", Method = "POST", Href = $"{baseUrl}/api/auth/verify" });
+                response.Links.Add(new ApiLink { Rel = "Verify", Method = "POST", Href = $"{baseUrl}/api/auth/verify" });
                 
                 return Ok(response);
             }
             catch (UserAlreadyExistsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (VerificationException ex)
             {
                 return BadRequest(ex.Message);
             }

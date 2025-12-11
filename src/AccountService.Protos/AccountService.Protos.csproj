@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="email.proto" GrpcServices="Both" />
+		<Protobuf Include="account.proto" GrpcServices="Both" />
 	</ItemGroup>
-
+	
 </Project>

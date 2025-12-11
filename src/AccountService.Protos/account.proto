@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "AccountService.Protos";
+
+package account;
+
+service AccountApi {
+  rpc GetById (GetByIdRequest) returns (GetByIdResponse);
+  rpc GetMyAccount (GetMyAccountRequest) returns (GetMyAccountResponse);
+  rpc ChangeName (ChangeNameRequest) returns (ChangeResponse);
+  rpc ChangePassword (ChangePasswordRequest) returns (ChangeResponse);
+  rpc ChangeEmail (ChangeEmailRequest) returns (ChangeResponse);
+}
+
+// Requests
+message GetByIdRequest {
+  string id = 1;
+}
+
+message GetMyAccountRequest { }
+
+message ChangeNameRequest {
+  string name = 1;
+}
+
+message ChangeEmailRequest {
+  string email = 1;
+}
+
+message ChangePasswordRequest {
+  string password = 1;
+}
+
+// Responses
+message GetByIdResponse {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message GetMyAccountResponse {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message ChangeResponse { }

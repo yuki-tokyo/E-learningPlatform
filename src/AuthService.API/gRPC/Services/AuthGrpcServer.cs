@@ -1,8 +1,6 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces;
 using AuthService.Protos;
-using EmailService.Domain.Exceptions;
-using EmailService.Domain.Interfaces;
 using Grpc.Core;
 using static AuthService.Protos.AuthApi;
 

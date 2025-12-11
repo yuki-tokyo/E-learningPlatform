@@ -45,9 +45,11 @@ namespace AuthService.Application.Services
             {
                 throw new UserAlreadyExistsException("Данный email уже занят.");
             }
+
             var code = new Random().Next(100000, 999999).ToString();
-            await emailClient.AddVerification(code, name, email, pass);
             var msg = await emailClient.SendCode(email, code);
+            await emailClient.AddVerification(code, name, email, pass);
+
             return msg;
         }
     }

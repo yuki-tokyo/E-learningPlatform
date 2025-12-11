@@ -53,6 +53,10 @@ namespace AuthService.Infrastructure.gRPC.Clients
             {
                 throw new UserAlreadyExistsException(ex.Status.Detail);
             }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
+            {
+                throw new VerificationException(ex.Status.Detail);
+            }
             catch (RpcException ex)
             {
                 throw new Exception($"Error: {ex}");

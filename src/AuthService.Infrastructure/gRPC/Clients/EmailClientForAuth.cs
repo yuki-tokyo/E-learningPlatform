@@ -1,7 +1,5 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
-using AuthService.Protos;
-using EmailService.Domain.Exceptions;
 using EmailService.Protos;
 using Grpc.Core;
 using System;

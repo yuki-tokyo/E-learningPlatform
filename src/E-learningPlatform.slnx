@@ -1,4 +1,11 @@
 <Solution>
+  <Folder Name="/AccountService/">
+    <Project Path="AccountService.API/AccountService.API.csproj" Id="752ce8d5-bdf6-4523-bf1b-0470ec643121" />
+    <Project Path="AccountService.Application/AccountService.Application.csproj" Id="ab14ac21-059a-459d-bfcf-22b3d566d59f" />
+    <Project Path="AccountService.Domain/AccountService.Domain.csproj" Id="7006b317-075d-4b2b-b151-4a5bb14eac51" />
+    <Project Path="AccountService.Infrastructure/AccountService.Infrastructure.csproj" Id="e1078e8b-c624-4a09-9f06-aae9afb219da" />
+    <Project Path="AccountService.Protos/AccountService.Protos.csproj" Id="27723310-714f-4028-b2c1-3127596c6915" />
+  </Folder>
   <Folder Name="/AuthService/">
     <Project Path="AuthService.API/AuthService.API.csproj" Id="80169dfa-dbd7-4526-adec-25e66e14eb3c" />
     <Project Path="AuthService.Application/AuthService.Application.csproj" Id="5b13b5bd-e9b4-4878-a03b-d5bff9292993" />
