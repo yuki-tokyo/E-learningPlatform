@@ -1,6 +1,7 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Protos;
+using EmailService.Domain.Exceptions;
 using EmailService.Protos;
 using Grpc.Core;
 using System;
@@ -28,7 +29,7 @@ namespace AuthService.Infrastructure.gRPC.Clients
             }
             catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
             {
-                throw new InvalidCredentialsException(ex.Status.Detail);
+                throw new VerificationException(ex.Status.Detail);
             }
             catch (RpcException ex)
             {
@@ -47,7 +48,7 @@ namespace AuthService.Infrastructure.gRPC.Clients
             }
             catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
             {
-                throw new InvalidCredentialsException(ex.Status.Detail);
+                throw new VerificationException(ex.Status.Detail);
             }
             catch (RpcException ex)
             {

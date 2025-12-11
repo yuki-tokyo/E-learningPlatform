@@ -1,6 +1,7 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces;
 using AuthService.Protos;
+using EmailService.Domain.Exceptions;
 using EmailService.Domain.Interfaces;
 using Grpc.Core;
 using static AuthService.Protos.AuthApi;
@@ -45,6 +46,10 @@ namespace AuthService.API.gRPC.Services
             catch (UserAlreadyExistsException ex)
             {
                 throw new RpcException(new Status(StatusCode.AlreadyExists, ex.Message));
+            }
+            catch (VerificationException ex)
+            {
+                throw new RpcException(new Status(StatusCode.FailedPrecondition, ex.Message));
             }
         }
 

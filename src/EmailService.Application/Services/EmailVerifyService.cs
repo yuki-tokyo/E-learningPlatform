@@ -1,10 +1,12 @@
-﻿using EmailService.Domain.Interfaces;
+﻿using EmailService.Domain.Exceptions;
+using EmailService.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace EmailService.Application.Services
 {
@@ -19,6 +21,12 @@ namespace EmailService.Application.Services
 
         public async Task SendVerificationCode(string email, string code)
         {
+            if (!IsValidEmail(email))
+            {
+                throw new VerificationException($"Почта указана некорректно.");
+            }
+
+
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential(
@@ -37,6 +45,22 @@ namespace EmailService.Application.Services
             message.To.Add(email);
 
             await smtpClient.SendMailAsync(message);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                var regex = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$");
+                return regex.IsMatch(email);
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

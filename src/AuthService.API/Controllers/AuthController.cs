@@ -1,9 +1,11 @@
 ﻿using AuthService.Application.DTO.Requests;
+using AuthService.Application.DTO.Responses;
 using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.gRPC;
 using EmailService.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Buffers.Text;
 using System.Xml;
 
 namespace AuthService.API.Controllers
@@ -26,7 +28,12 @@ namespace AuthService.API.Controllers
             try
             {
                 var msg = await client.Register(dto.Email, dto.Name, dto.Password);
-                return Ok(msg);
+                var response = new RegisterResponse { Msg = "Код успешно отправлен на почту!" };
+
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                response.Links.Add(new ApiLink { Rel = "verify", Method = "POST", Href = $"{baseUrl}/api/auth/verify" });
+                
+                return Ok(response);
             }
             catch (UserAlreadyExistsException ex)
             {

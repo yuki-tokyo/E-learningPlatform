@@ -28,6 +28,7 @@
     <ProjectReference Include="..\AuthService.Protos\AuthService.Protos.csproj" />
     <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj" />
     <ProjectReference Include="..\AuthService.Domain\AuthService.Domain.csproj" />
+    <ProjectReference Include="..\EmailService.Domain\EmailService.Domain.csproj" />
     <ProjectReference Include="..\EmailService.Protos\EmailService.Protos.csproj" />
   </ItemGroup>
 
