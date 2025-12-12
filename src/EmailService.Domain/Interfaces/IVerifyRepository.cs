@@ -8,6 +8,7 @@ namespace EmailService.Domain.Interfaces
     public interface IVerifyRepository
     {
         Task AddVerification(Verification verif);
+        Task DeleteVerification(string email);
         Task<Verification?> FindVerification(string email);
     }
 }

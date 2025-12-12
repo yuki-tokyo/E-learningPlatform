@@ -29,6 +29,10 @@ namespace AccountService.Infrastructure.gRPC.Clients
 
                 await client.VerifyChangedEmailAsync(new VerifyChangedEmailRequest { Email = email, Code = code }, headers: headers);
             }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition)
+            {
+                throw new VerificationException(ex.Status.Detail);
+            }
             catch (RpcException ex)
             {
                 throw new Exception($"Error: {ex}");

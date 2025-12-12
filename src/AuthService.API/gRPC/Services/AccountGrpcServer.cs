@@ -59,11 +59,18 @@ namespace AuthService.API.gRPC.Services
         }
         public override async Task<ChangeResponse> ChangeEmail(ChangeEmailRequest request, ServerCallContext context)
         {
-            var userId = context.GetUserId();
+            try
+            {
+                var userId = context.GetUserId();
 
-            await service.ChangeEmail(userId, request.Email);
+                await service.ChangeEmail(userId, request.Email);
 
-            return new ChangeResponse { };
+                return new ChangeResponse { };
+            }
+            catch (UserAlreadyExistsException ex)
+            {
+                throw new RpcException(new Status(StatusCode.AlreadyExists, ex.Message));
+            }
         }
 
         public override async Task<ChangeResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)

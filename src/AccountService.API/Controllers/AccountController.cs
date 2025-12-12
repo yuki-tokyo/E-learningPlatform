@@ -77,6 +77,10 @@ namespace AccountService.API.Controllers
 
                 return Ok(response);
             }
+            catch (UserAlreadyExistsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex}");
@@ -98,6 +102,10 @@ namespace AccountService.API.Controllers
                 response.Links.Add(new ApiLink { Rel = "My account", Method = "GET", Href = $"{baseUrl}/api/account/me" });
 
                 return Ok(response);
+            }
+            catch (VerificationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

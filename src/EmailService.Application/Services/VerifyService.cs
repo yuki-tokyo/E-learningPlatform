@@ -32,7 +32,10 @@ namespace EmailService.Application.Services
             {
                 throw new VerificationException("Неверный код.");
             }
+
             await authClient.AddUser(verif.UserName, email, verif.UserPassword);
+            await vrepos.DeleteVerification(email);
+
             return "Почта успешно подтверждена!";
         }
 
@@ -56,7 +59,9 @@ namespace EmailService.Application.Services
             {
                 throw new VerificationException("Неверный код.");
             }
+
             await authClient.ChangeEmail(email);
+            await vrepos.DeleteVerification(email);
         }
 
         public async Task AddVerification(Verification verif)

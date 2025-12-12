@@ -21,7 +21,7 @@ namespace EmailService.Infrastructure.gRPC.Clients
             this.contextAccessor = contextAccessor;
         }
 
-        public async Task AddUser(string name, string email, string pass)
+        public async Task AddUser(string? name, string email, string? pass)
         {
             try
             {

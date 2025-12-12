@@ -34,6 +34,10 @@ namespace AccountService.Infrastructure.gRPC.Clients
 
                 var response = await client.ChangeEmailAsync(new ChangeEmailRequest { Email = email }, headers: headers);
             }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
+            {
+                throw new UserAlreadyExistsException(ex.Status.Detail);
+            }
             catch (RpcException ex)
             {
                 throw new Exception($"Error: {ex}");
