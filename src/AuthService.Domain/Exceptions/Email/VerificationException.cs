@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuthService.Domain.Exceptions
+namespace AuthService.Domain.Exceptions.Email
 {
     public class VerificationException : Exception
     {

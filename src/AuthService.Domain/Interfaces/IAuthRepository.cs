@@ -9,6 +9,7 @@ namespace AuthService.Domain.Interfaces
     {
         Task Register(string name, string email, string pass);
         Task<User?> Login(string email, string pass);
+        Task ChangeEmail(string id, string email);
         Task<bool> IsThisEmailRegistered(string email);
     }
 }

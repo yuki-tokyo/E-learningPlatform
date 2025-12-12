@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AuthService.Infrastructure.Repos
 {
@@ -15,6 +16,18 @@ namespace AuthService.Infrastructure.Repos
         public AuthRepository(IDbContextFactory<AuthDb> factory)
         {
             this.factory = factory;
+        }
+
+        public async Task ChangeEmail(string id, string email)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            var user = await db.Users
+                .FirstAsync(u => u.Id == id);
+
+            user.Email = email;
+
+            await db.SaveChangesAsync();
         }
 
         public async Task<bool> IsThisEmailRegistered(string email)

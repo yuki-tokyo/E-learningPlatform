@@ -7,5 +7,6 @@ namespace EmailService.Domain.Interfaces
     public interface IAuthClientForEmail
     {
         Task AddUser(string name, string email, string pass);
+        Task ChangeEmail(string email);
     }
 }

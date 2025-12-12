@@ -9,5 +9,6 @@ namespace EmailService.Domain.Interfaces
     {
         Task<string> VerifyEmail(string email, string code);
         Task AddVerification(Verification verif);
+        Task VerifyChangedEmail(string id, string email, string code);
     }
 }

@@ -1,4 +1,4 @@
-﻿using AuthService.Domain.Exceptions.Account;
+﻿using EmailService.Domain.Exceptions.Account;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace AuthService.Infrastructure.Extensions.Account
+namespace EmailService.Infrastructure.Extensions
 {
     public static class GrpcExtensions
     {

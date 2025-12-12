@@ -36,6 +36,29 @@ namespace EmailService.Application.Services
             return "Почта успешно подтверждена!";
         }
 
+        public async Task VerifyChangedEmail(string currentUserId, string email, string code)
+        {
+            var verif = await vrepos.FindVerification(email);
+
+            if (verif == null)
+            {
+                throw new VerificationException("Данные для верификации почты некорректны.");
+            }
+            else if (verif.UserId != currentUserId)
+            {
+                throw new VerificationException("Заявка на смену почты была подана не вами.");
+            }
+            else if (verif.ExpirationDate < DateTime.UtcNow)
+            {
+                throw new VerificationException("Код просрочен, запросите новый.");
+            }
+            else if (verif.Code != code)
+            {
+                throw new VerificationException("Неверный код.");
+            }
+            await authClient.ChangeEmail(email);
+        }
+
         public async Task AddVerification(Verification verif)
         {
             await vrepos.AddVerification(verif);

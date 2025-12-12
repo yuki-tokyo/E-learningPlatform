@@ -28,6 +28,16 @@ namespace AuthService.Application.Services
             await repos.Register(name, email, pass);
         }
 
+        public async Task ChangeEmail(string id, string email)
+        {
+            await repos.ChangeEmail(id, email);
+        }
+
+        public async Task<bool> IsThisEmailRegistered(string email)
+        {
+            return await repos.IsThisEmailRegistered(email);
+        }
+
         public async Task<string> Login(string email, string pass)
         {
             var user = await repos.Login(email, pass);

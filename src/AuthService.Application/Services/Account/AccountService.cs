@@ -1,7 +1,9 @@
 ﻿using AuthService.Domain.Entities;
 using AuthService.Domain.Exceptions;
+using AuthService.Domain.Interfaces;
 using AuthService.Domain.Interfaces.Account.Repos;
 using AuthService.Domain.Interfaces.Account.Services;
+using AuthService.Domain.Interfaces.gRPC;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,14 +13,33 @@ namespace AuthService.Application.Services.Account
 {
     public class AccountService : IAccountService
     {
+        private readonly IEmailClientForAuth emailClient;
         private readonly IAccountRepository repos;
-        public AccountService(IAccountRepository repos)
+        private readonly IAuthRepository authRepos;
+        public AccountService
+            (IEmailClientForAuth emailClient, 
+            IAccountRepository repos, 
+            IAuthRepository authRepos)
         {
+            this.emailClient = emailClient;
             this.repos = repos;
+            this.authRepos = authRepos;
         }
         public async Task ChangeEmail(string id, string email)
         {
-            await repos.ChangeEmail(id, email);
+            var result = await authRepos.IsThisEmailRegistered(email);
+            if (result)
+            {
+                throw new UserAlreadyExistsException("Данный email уже занят.");
+            }
+            var code = new Random().Next(100000, 999999).ToString();
+            var msg = await emailClient.SendCode(email, code);
+            await emailClient.AddVerificationForChangedEmail(id, code, email);
+        }
+
+        public async Task VerifyChangedEmail(string email, string code)
+        {
+            await emailClient.VerifyChangedEmail(email, code);
         }
 
         public async Task ChangeName(string id, string name)

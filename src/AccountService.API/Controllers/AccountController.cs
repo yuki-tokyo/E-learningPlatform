@@ -2,11 +2,13 @@
 using AccountService.Application.DTO.Responses;
 using AccountService.Domain.Exceptions;
 using AccountService.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security;
 
 namespace AccountService.API.Controllers
 {
+    [Authorize]
     [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -64,10 +66,33 @@ namespace AccountService.API.Controllers
         {
             try
             {
-                await client.ChangePassword(dto.Email);
-                var response = new ChangeResponse { Msg = "Email успешно поменян!" };
+                await client.ChangeEmail(dto.Email);
+                var response = new ChangeResponse { Msg = "Код для подтверждения почты отправлен!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                response.Links.Add(new ApiLink { Rel = "Verify changed email", Method = "POST", Href = $"{baseUrl}/api/account/change/email/verify" });
+                response.Links.Add(new ApiLink { Rel = "Change name", Method = "PATCH", Href = $"{baseUrl}/api/account/change/name" });
+                response.Links.Add(new ApiLink { Rel = "Change password", Method = "PATCH", Href = $"{baseUrl}/api/account/change/password" });
+                response.Links.Add(new ApiLink { Rel = "My account", Method = "GET", Href = $"{baseUrl}/api/account/me" });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
+            }
+        }
+
+        [HttpPost("change/email/verify")]
+        public async Task<IActionResult> VerifyChangedEmail([FromBody] VerifyChangedEmailRequest dto)
+        {
+            try
+            {
+                await client.VerifyChangedEmail(dto.Email, dto.Code);
+                var response = new ChangeResponse { Msg = "Почта поменяна!" };
+
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                response.Links.Add(new ApiLink { Rel = "Change email", Method = "PATCH", Href = $"{baseUrl}/api/account/change/email" });
                 response.Links.Add(new ApiLink { Rel = "Change name", Method = "PATCH", Href = $"{baseUrl}/api/account/change/name" });
                 response.Links.Add(new ApiLink { Rel = "Change password", Method = "PATCH", Href = $"{baseUrl}/api/account/change/password" });
                 response.Links.Add(new ApiLink { Rel = "My account", Method = "GET", Href = $"{baseUrl}/api/account/me" });
@@ -106,12 +131,13 @@ namespace AccountService.API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("search/user")]
-        public async Task<IActionResult> GetById([FromQuery] string Id)
+        public async Task<IActionResult> GetById([FromQuery] string id)
         {
             try
             {
-                var user = await client.GetById(Id);
+                var user = await client.GetById(id);
 
                 return Ok(user);
             }

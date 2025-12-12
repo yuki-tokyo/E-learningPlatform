@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto"; 
+
 option csharp_namespace = "EmailService.Protos";
 
 package email;
@@ -7,7 +9,8 @@ package email;
 service EmailApi {
   rpc SendCode (SendCodeRequest) returns (SendCodeResponse);
   rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse);
-  rpc AddVerification (AddVerificationRequest) returns (AddVerificationResponse);
+  rpc AddVerification (AddVerificationRequest) returns (google.protobuf.Empty);
+  rpc VerifyChangedEmail (VerifyChangedEmailRequest) returns (google.protobuf.Empty);
 }
 
 // Requests
@@ -23,9 +26,15 @@ message VerifyEmailRequest {
 
 message AddVerificationRequest {
   string code = 1;
-  string username = 2;
-  string useremail = 3;
-  string userpassword = 4;
+  optional string userid = 2;
+  optional string username = 3;
+  string useremail = 4;
+  optional string userpassword = 5;
+}
+
+message VerifyChangedEmailRequest {
+  string email = 1;
+  string code = 2;
 }
 
 // Responses
@@ -36,5 +45,3 @@ message SendCodeResponse {
 message VerifyEmailResponse {
   string msg = 1;
 }
-
-message AddVerificationResponse { }

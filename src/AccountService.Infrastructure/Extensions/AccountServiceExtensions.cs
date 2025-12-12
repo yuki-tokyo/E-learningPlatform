@@ -1,6 +1,7 @@
 ﻿using AccountService.Domain.Interfaces;
 using AccountService.Infrastructure.gRPC.Clients;
 using AccountService.Protos;
+using EmailService.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,9 @@ namespace AccountService.Infrastructure.Extensions
             // DI-containers
             // Client
             services.AddScoped<IAccountGrpcClient, AccountGrpcClient>();
+
+
+            services.AddScoped<IEmailClientForAccount, EmailClientForAccount>();
 
             // HttpContext
             services.AddHttpContextAccessor();
@@ -54,6 +58,20 @@ namespace AccountService.Infrastructure.Extensions
             services.AddGrpcClient<AccountApi.AccountApiClient>(o =>
             {
                 o.Address = new Uri("https://localhost:3001");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+
+            // Email Client
+            services.AddGrpcClient<EmailApi.EmailApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3002");
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
             {

@@ -1,7 +1,10 @@
 ﻿using AuthService.Domain.Exceptions;
+using AuthService.Domain.Exceptions.Email;
 using AuthService.Domain.Interfaces.gRPC;
+using AuthService.Infrastructure.Extensions.Account;
 using EmailService.Protos;
 using Grpc.Core;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +14,12 @@ namespace AuthService.Infrastructure.gRPC.Clients
     public class EmailClientForAuth : IEmailClientForAuth
     {
         private readonly EmailApi.EmailApiClient client;
+        private readonly IHttpContextAccessor contextAccessor;
 
-        public EmailClientForAuth(EmailApi.EmailApiClient client)
+        public EmailClientForAuth(EmailApi.EmailApiClient client, IHttpContextAccessor contextAccessor)
         {
             this.client = client;
+            this.contextAccessor = contextAccessor;
         }
         public async Task<string> SendCode(string email, string code)
         {
@@ -60,6 +65,33 @@ namespace AuthService.Infrastructure.gRPC.Clients
             {
                 var request = new AddVerificationRequest { Useremail = email, Username = name, Userpassword = pass, Code = code };
                 await client.AddVerificationAsync(request);
+            }
+            catch (RpcException ex)
+            {
+                throw new Exception($"Error: {ex}");
+            }
+        }
+
+        public async Task AddVerificationForChangedEmail(string id, string code, string email)
+        {
+            try
+            {
+                var request = new AddVerificationRequest { Userid = id, Useremail = email, Code = code };
+                await client.AddVerificationAsync(request);
+            }
+            catch (RpcException ex)
+            {
+                throw new Exception($"Error: {ex}");
+            }
+        }
+
+        public async Task VerifyChangedEmail(string email, string code)
+        {
+            try
+            {
+                var headers = contextAccessor.GetAuthMetadata();
+
+                await client.VerifyChangedEmailAsync(new VerifyChangedEmailRequest { Email = email, Code = code }, headers: headers);
             }
             catch (RpcException ex)
             {

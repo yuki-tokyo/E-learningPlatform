@@ -1,6 +1,9 @@
 ﻿using AuthService.Domain.Exceptions;
+using AuthService.Domain.Exceptions.Email;
 using AuthService.Domain.Interfaces;
+using AuthService.Infrastructure.Extensions.Account;
 using AuthService.Protos;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using static AuthService.Protos.AuthApi;
 
@@ -51,11 +54,20 @@ namespace AuthService.API.gRPC.Services
             }
         }
 
-        public override async Task<AddUserResponse> AddUser(AddUserRequest request, ServerCallContext context)
+        public override async Task<Empty> AddUser(AddUserRequest request, ServerCallContext context)
         {
             await service.AddUser(request.Name, request.Email, request.Password);
 
-            return new AddUserResponse { };
+            return new Empty();
+        }
+        
+        public override async Task<Empty> ChangeEmail(ChangeEmailRequest request, ServerCallContext context)
+        {
+            var userId = context.GetUserId();
+
+            await service.ChangeEmail(userId, request.Email);
+
+            return new Empty();
         }
     }
 }

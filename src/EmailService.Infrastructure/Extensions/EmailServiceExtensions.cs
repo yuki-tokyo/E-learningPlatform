@@ -4,7 +4,6 @@ using EmailService.Domain.Interfaces;
 using EmailService.Infrastructure.Data;
 using EmailService.Infrastructure.gRPC.Clients;
 using EmailService.Infrastructure.Repos;
-using EmailService.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +33,10 @@ namespace EmailService.Infrastructure.Extensions
                     configuration.GetConnectionString("Postgres"),
                     b => b.MigrationsAssembly(typeof(EmailDb).Assembly.FullName)),
                     lifetime: ServiceLifetime.Scoped);
+
+
+            // HttpContext
+            services.AddHttpContextAccessor();
 
             // gRPC Server
             services.AddGrpc();

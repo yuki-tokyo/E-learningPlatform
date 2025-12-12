@@ -41,6 +41,9 @@ namespace AuthService.Infrastructure.Extensions
                     b => b.MigrationsAssembly(typeof(AuthDb).Assembly.FullName)),
                     lifetime: ServiceLifetime.Scoped);
 
+            // HttpContext
+            services.AddHttpContextAccessor();
+
             // gRPC Server
             services.AddGrpc();
 

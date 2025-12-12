@@ -1,7 +1,9 @@
 ﻿using EmailService.Domain.Entities;
 using EmailService.Domain.Exceptions;
 using EmailService.Domain.Interfaces;
+using EmailService.Infrastructure.Extensions;
 using EmailService.Protos;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Identity.Data;
 using System.Security.Authentication;
@@ -52,14 +54,37 @@ namespace EmailService.API.gRPC.Services
             }
         }
 
+        public override async Task<Empty> VerifyChangedEmail(VerifyChangedEmailRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var userId = context.GetUserId();
 
-        public override async Task<AddVerificationResponse> AddVerification(AddVerificationRequest request, ServerCallContext context)
+                await vservice.VerifyChangedEmail(userId, request.Email, request.Code);
+
+                return new Empty();
+            }
+            catch (VerificationException ex)
+            {
+                throw new RpcException(new Status(StatusCode.FailedPrecondition, ex.Message));
+            }
+        }
+
+
+        public override async Task<Empty> AddVerification(AddVerificationRequest request, ServerCallContext context)
         {
             var verif = new Verification
-            { Code = request.Code, UserEmail = request.Useremail, UserName = request.Username, UserPassword = request.Userpassword };
+            {
+                UserId = request.Userid,
+                UserEmail = request.Useremail,
+                UserName = request.Username,
+                UserPassword = request.Userpassword,
+                Code = request.Code
+            };
+
             await vservice.AddVerification(verif);
 
-            return new AddVerificationResponse { };
+            return new Empty();
         }
     }
 }

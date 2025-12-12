@@ -65,6 +65,7 @@ namespace AuthService.API.gRPC.Services
 
             return new ChangeResponse { };
         }
+
         public override async Task<ChangeResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
         {
             var userId = context.GetUserId();

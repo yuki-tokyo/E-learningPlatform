@@ -1,5 +1,6 @@
 ﻿using AuthService.Application.DTO.Requests;
 using AuthService.Domain.Exceptions;
+using AuthService.Domain.Exceptions.Email;
 using AuthService.Domain.Interfaces.gRPC;
 using AuthService.Protos;
 using Grpc.Core;

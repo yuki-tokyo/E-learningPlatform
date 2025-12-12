@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AccountService.Infrastructure.Extensions
 {
-    public static class GrpcClientExtensions
+    public static class GrpcExtensions
     {
         public static Metadata GetAuthMetadata(this IHttpContextAccessor contextAccessor)
         {

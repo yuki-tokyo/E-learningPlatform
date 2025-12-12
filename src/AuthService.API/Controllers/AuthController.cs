@@ -1,6 +1,7 @@
 ﻿using AuthService.Application.DTO.Requests;
 using AuthService.Application.DTO.Responses;
 using AuthService.Domain.Exceptions;
+using AuthService.Domain.Exceptions.Email;
 using AuthService.Domain.Interfaces.gRPC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -12,5 +12,6 @@ namespace AuthService.Domain.Interfaces.Account.Services
         Task ChangeName(string id, string name);
         Task ChangeEmail(string id, string email);
         Task ChangePassword(string id, string password);
+        Task VerifyChangedEmail(string email, string code);
     }
 }
