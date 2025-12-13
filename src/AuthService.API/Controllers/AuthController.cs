@@ -1,8 +1,9 @@
 ﻿using AuthService.Application.DTO.Requests;
-using AuthService.Application.DTO.Responses;
 using AuthService.Domain.Exceptions;
 using AuthService.Domain.Exceptions.Email;
+using AuthService.Domain.Interfaces;
 using AuthService.Domain.Interfaces.gRPC;
+using Common.DTO.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Buffers.Text;
@@ -14,11 +15,11 @@ namespace AuthService.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthGrpcClient client;
+        private readonly IAuthService service;
         private readonly IEmailClientForAuth emailClient;
-        public AuthController(IAuthGrpcClient client, IEmailClientForAuth emailClient)
+        public AuthController(IAuthService service, IEmailClientForAuth emailClient)
         {
-            this.client = client;
+            this.service = service;
             this.emailClient = emailClient;
         }
 
@@ -27,8 +28,8 @@ namespace AuthService.API.Controllers
         {
             try
             {
-                var msg = await client.Register(dto.Email, dto.Name, dto.Password);
-                var response = new RegisterResponse { Msg = "Код успешно отправлен на почту!" };
+                var msg = await service.Register(dto.Name, dto.Email, dto.Password);
+                var response = new MessageResponse { Msg = "Код успешно отправлен на почту!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Verify", Method = "POST", Href = $"{baseUrl}/api/auth/verify" });
@@ -54,7 +55,7 @@ namespace AuthService.API.Controllers
         {
             try
             {
-                var token = await client.Login(dto.Email, dto.Password);
+                var token = await service.Login(dto.Email, dto.Password);
                 return Ok(token);
             }
             catch (InvalidCredentialsException ex)

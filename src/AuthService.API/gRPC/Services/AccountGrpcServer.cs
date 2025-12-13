@@ -1,7 +1,7 @@
 ﻿using AccountService.Protos;
 using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces.Account.Services;
-using AuthService.Infrastructure.Extensions.Account;
+using Common.Extensions;
 using Grpc.Core;
 using System.IdentityModel.Tokens.Jwt;
 

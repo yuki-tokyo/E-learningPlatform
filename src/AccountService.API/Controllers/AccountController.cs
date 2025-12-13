@@ -2,6 +2,7 @@
 using AccountService.Application.DTO.Responses;
 using AccountService.Domain.Exceptions;
 using AccountService.Domain.Interfaces;
+using Common.DTO.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security;
@@ -25,7 +26,7 @@ namespace AccountService.API.Controllers
             try
             {
                 await client.ChangeName(dto.Name);
-                var response = new ChangeResponse { Msg = "Имя успешно поменяно!" };
+                var response = new MessageResponse { Msg = "Имя успешно поменяно!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Change password", Method = "PATCH", Href = $"{baseUrl}/api/account/change/password" });
@@ -46,7 +47,7 @@ namespace AccountService.API.Controllers
             try
             {
                 await client.ChangePassword(dto.Password);
-                var response = new ChangeResponse { Msg = "Пароль успешно поменян!" };
+                var response = new MessageResponse { Msg = "Пароль успешно поменян!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Change name", Method = "PATCH", Href = $"{baseUrl}/api/account/change/name" });
@@ -67,7 +68,7 @@ namespace AccountService.API.Controllers
             try
             {
                 await client.ChangeEmail(dto.Email);
-                var response = new ChangeResponse { Msg = "Код для подтверждения почты отправлен!" };
+                var response = new MessageResponse { Msg = "Код для подтверждения почты отправлен!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Verify changed email", Method = "POST", Href = $"{baseUrl}/api/account/change/email/verify" });
@@ -93,7 +94,7 @@ namespace AccountService.API.Controllers
             try
             {
                 await client.VerifyChangedEmail(dto.Email, dto.Code);
-                var response = new ChangeResponse { Msg = "Почта поменяна!" };
+                var response = new MessageResponse { Msg = "Почта поменяна!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Change email", Method = "PATCH", Href = $"{baseUrl}/api/account/change/email" });
@@ -151,7 +152,7 @@ namespace AccountService.API.Controllers
             }
             catch (UserNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace AuthService.Infrastructure.Repos.Account
 {
@@ -21,35 +22,32 @@ namespace AuthService.Infrastructure.Repos.Account
         {
             await using var db = await factory.CreateDbContextAsync();
 
-            var user = await db.Users
-                .FirstAsync(u => u.Id == id);
-
-            user.Email = email;
-            await db.SaveChangesAsync();
+            await db.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(setters =>
+                    setters.SetProperty(u => u.Email, email));
         }
 
         public async Task ChangeName(string id, string name)
         {
             await using var db = await factory.CreateDbContextAsync();
 
-            var user = await db.Users
-                .FirstAsync(u => u.Id == id);
-
-            user.Name = name;
-            await db.SaveChangesAsync();
+            await db.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(setters =>
+                    setters.SetProperty(u => u.Name, name));
         }
 
         public async Task ChangePassword(string id, string password)
         {
             await using var db = await factory.CreateDbContextAsync();
 
-            var user = await db.Users
-                .FirstAsync(u => u.Id == id);
-
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-            user.Password = hashedPassword;
-            await db.SaveChangesAsync();
+            await db.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(setters =>
+                    setters.SetProperty(u => u.Password, hashedPassword));
         }
 
         public async Task<User?> GetById(string id)

@@ -1,12 +1,11 @@
-﻿using EmailService.Domain.Entities;
+﻿using Common.Extensions;
+using EmailService.Domain.Entities;
 using EmailService.Domain.Exceptions;
 using EmailService.Domain.Interfaces;
 using EmailService.Infrastructure.Extensions;
 using EmailService.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Microsoft.AspNetCore.Identity.Data;
-using System.Security.Authentication;
 using static EmailService.Protos.EmailApi;
 
 namespace EmailService.API.gRPC.Services

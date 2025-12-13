@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto"; 
+
+option csharp_namespace = "PaymentService.Protos";
+
+package payment;
+
+service PaymentApi {
+  rpc DepositMoney (DepositMoneyRequest) returns (google.protobuf.Empty);
+  rpc SpendMoney (SpendMoneyRequest) returns (google.protobuf.Empty);
+}
+
+// Requests
+message DepositMoneyRequest {
+  string id = 1;
+  double amount = 2;
+}
+
+message SpendMoneyRequest {
+  string id = 1;
+  double amount = 2;
+}

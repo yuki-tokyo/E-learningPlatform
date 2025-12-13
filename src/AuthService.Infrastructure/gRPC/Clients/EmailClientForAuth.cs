@@ -1,7 +1,7 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Exceptions.Email;
 using AuthService.Domain.Interfaces.gRPC;
-using AuthService.Infrastructure.Extensions.Account;
+using Common.Extensions;
 using EmailService.Protos;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;

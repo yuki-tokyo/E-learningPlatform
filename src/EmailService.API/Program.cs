@@ -9,6 +9,7 @@ builder.Services.AddOpenApi();
 
 // Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddGrpcClients(builder.Configuration);
 
 var app = builder.Build();

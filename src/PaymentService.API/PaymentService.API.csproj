@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj" />
+		<ProjectReference Include="..\PaymentService.Domain\PaymentService.Domain.csproj" />
+		<ProjectReference Include="..\PaymentService.Infrastructure\PaymentService.Infrastructure.csproj" />
+		<ProjectReference Include="..\PaymentService.Protos\PaymentService.Protos.csproj" />
+	</ItemGroup>
+
+</Project>

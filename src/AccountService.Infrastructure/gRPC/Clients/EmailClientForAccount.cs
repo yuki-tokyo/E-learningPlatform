@@ -1,6 +1,7 @@
 ﻿using AccountService.Domain.Interfaces;
 using AccountService.Infrastructure.Extensions;
 using AccountService.Protos;
+using Common.Extensions;
 using EmailService.Protos;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;

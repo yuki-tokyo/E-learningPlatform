@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto"; 
+
+option csharp_namespace = "CoursesService.Protos";
+
+package courses;
+
+service CoursesApi {
+  rpc GetCourseById (GetCourseByIdRequest) returns (CourseResponse);
+}
+
+// Requests
+message GetCourseByIdRequest {
+  string id = 1;
+}
+
+
+// Responses
+message CourseResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string price = 4;
+  optional int32 buyersCount = 5;
+}

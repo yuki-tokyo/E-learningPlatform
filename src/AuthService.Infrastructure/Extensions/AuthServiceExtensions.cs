@@ -57,7 +57,6 @@ namespace AuthService.Infrastructure.Extensions
             services.AddScoped<IAccountService, AccountService>();
             // Clients
             services.AddScoped<IEmailClientForAuth, EmailClientForAuth>();
-            services.AddScoped<IAuthGrpcClient, AuthGrpcClient>();
 
             // Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -85,20 +84,6 @@ namespace AuthService.Infrastructure.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            // gRPC Client
-            services.AddGrpcClient<AuthApi.AuthApiClient>(o =>
-            {
-                o.Address = new Uri("https://localhost:3001");
-            })
-            .ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                var handler = new HttpClientHandler();
-                // Ignore SSL 
-                handler.ServerCertificateCustomValidationCallback =
-                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-                return handler;
-            });
-
             // Email client
             services.AddGrpcClient<EmailApi.EmailApiClient>(o =>
             {

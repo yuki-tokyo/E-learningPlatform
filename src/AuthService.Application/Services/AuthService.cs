@@ -1,6 +1,7 @@
 ﻿using AuthService.Domain.Exceptions;
 using AuthService.Domain.Interfaces;
 using AuthService.Domain.Interfaces.gRPC;
+using Common.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
@@ -31,6 +32,16 @@ namespace AuthService.Application.Services
         public async Task ChangeEmail(string id, string email)
         {
             await repos.ChangeEmail(id, email);
+        }
+
+        public async Task EditBalance(string currentUserId, double depositAmount, double spentAmount)
+        {
+            var result = await repos.EditBalance(currentUserId, depositAmount, spentAmount);
+
+            if(result == 0)
+            {
+                throw new NotEnoughMoneyException("На счету недостаточно средств.");
+            }
         }
 
         public async Task<bool> IsThisEmailRegistered(string email)

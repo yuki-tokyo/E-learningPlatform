@@ -22,12 +22,29 @@ namespace AuthService.Infrastructure.Repos
         {
             await using var db = await factory.CreateDbContextAsync();
 
+            await db.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(setters =>
+                    setters.SetProperty(u => u.Email, email));
+        }
+
+        public async Task<int> EditBalance(string currentUserId, double depositAmount, double spentAmount)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
             var user = await db.Users
-                .FirstAsync(u => u.Id == id);
+                .FirstAsync(u => u.Id == currentUserId);
 
-            user.Email = email;
+            user.Balance += depositAmount;
+            if (user.Balance < spentAmount)
+            {
+                return 0;
+            }
 
+            user.Balance -= spentAmount;
             await db.SaveChangesAsync();
+
+            return 1;
         }
 
         public async Task<bool> IsThisEmailRegistered(string email)

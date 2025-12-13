@@ -32,8 +32,6 @@ namespace EmailService.Infrastructure.Repos
             await db.Verifications
                 .Where(v => v.UserEmail == email)
                 .ExecuteDeleteAsync();
-
-            await db.SaveChangesAsync();
         }
 
         public async Task<Verification?> FindVerification(string email)

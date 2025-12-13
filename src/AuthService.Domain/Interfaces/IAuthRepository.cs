@@ -11,5 +11,6 @@ namespace AuthService.Domain.Interfaces
         Task<User?> Login(string email, string pass);
         Task ChangeEmail(string id, string email);
         Task<bool> IsThisEmailRegistered(string email);
+        Task<int> EditBalance(string currentUserId, double depositAmount, double spentAmount);
     }
 }

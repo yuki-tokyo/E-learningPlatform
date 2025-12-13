@@ -10,6 +10,7 @@ namespace AuthService.Domain.Entities
         public required string Name { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
+        public double Balance { get; set; } = 0;
         public bool IsEmailVerified { get; set; } = false;
     }
 }

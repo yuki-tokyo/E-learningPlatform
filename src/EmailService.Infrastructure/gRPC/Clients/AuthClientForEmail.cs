@@ -1,4 +1,5 @@
 ﻿using AuthService.Protos;
+using Common.Extensions;
 using EmailService.Domain.Interfaces;
 using EmailService.Infrastructure.Extensions;
 using Grpc.Core;
