@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "SearchService.Protos";
+
+package search;
+
+service SearchApi {
+  rpc SearchCourses (SearchCoursesRequest) returns (SearchCoursesResponse);
+}
+
+// Requests
+message SearchCoursesRequest {
+  string query = 1;
+}
+
+message SearchCoursesResponse {
+  repeated CourseResponse courses = 1;
+}
+
+// Responses
+message CourseResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string authorId = 4;
+  double price = 5;
+  int32 buyersCount = 6;
+  google.protobuf.Timestamp created_at = 7;
+}

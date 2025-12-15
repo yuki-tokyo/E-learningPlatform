@@ -1,4 +1,6 @@
-﻿using CoursesService.Domain.Entities;
+﻿using AutoMapper;
+using Common.Kafka.Messages;
+using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
 using CoursesService.Domain.Interfaces;
 using System;
@@ -10,14 +12,26 @@ namespace CoursesService.Application.Services
     public class CoursesService : ICoursesService
     {
         private readonly ICoursesRepository repos;
+        private readonly IKafkaProducerForCourses kafka;
+        private readonly IMapper mapper;
 
-        public CoursesService(ICoursesRepository repos)
+        public CoursesService
+            (ICoursesRepository repos, 
+            IKafkaProducerForCourses kafka,
+            IMapper mapper)
         {
             this.repos = repos;
+            this.kafka = kafka;
+            this.mapper = mapper;
         }
         public async Task AddCourse(string name, string description, double price, string currentUserId)
         {
-            await repos.AddCourse(name, description, price, currentUserId);
+            var course = await repos.AddCourse(name, description, price, currentUserId);
+            var mappedCourse = mapper.Map<CourseMessage>(course);
+
+            mappedCourse.Method = CourseMethods.Add;
+
+            await kafka.Produce(mappedCourse);
         }
 
         public async Task BuyCourse(string id, string currentUserId)
@@ -46,6 +60,12 @@ namespace CoursesService.Application.Services
             {
                 throw new CourseChangesException("Курс не найден/не принадлежит вам.");
             }
+
+            var msg = new CourseMessage { Id = id };
+
+            msg.Method = CourseMethods.DeleteCourse;
+
+            await kafka.Produce(msg);
         }
 
         public async Task<IEnumerable<Course>> GetCoursesIBought(string currentUserId)
@@ -66,6 +86,12 @@ namespace CoursesService.Application.Services
             {
                 throw new CourseChangesException("Курс не найден/не принадлежит вам.");
             }
+
+            var msg = new CourseMessage { Id = id, Description = description };
+
+            msg.Method = CourseMethods.UpdateDescription;
+
+            await kafka.Produce(msg);
         }
 
         public async Task UpdateCourseName(string id, string name, string currentUserId)
@@ -76,6 +102,12 @@ namespace CoursesService.Application.Services
             {
                 throw new CourseChangesException("Курс не найден/не принадлежит вам.");
             }
+
+            var msg = new CourseMessage { Id = id, Name = name };
+
+            msg.Method = CourseMethods.UpdateName;
+
+            await kafka.Produce(msg);
         }
 
         public async Task UpdateCoursePrice(string id, double price, string currentUserId)
@@ -86,6 +118,12 @@ namespace CoursesService.Application.Services
             {
                 throw new CourseChangesException("Курс не найден/не принадлежит вам.");
             }
+
+            var msg = new CourseMessage { Id = id, Price = price };
+
+            msg.Method = CourseMethods.UpdatePrice;
+
+            await kafka.Produce(msg);
         }
     }
 }

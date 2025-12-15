@@ -1,4 +1,4 @@
-﻿using EmailService.Domain.Exceptions;
+﻿using Common.Exceptions;
 using EmailService.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;

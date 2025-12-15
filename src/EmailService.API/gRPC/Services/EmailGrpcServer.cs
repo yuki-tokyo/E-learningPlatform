@@ -1,6 +1,6 @@
-﻿using Common.Extensions;
+﻿using Common.Exceptions;
+using Common.Extensions;
 using EmailService.Domain.Entities;
-using EmailService.Domain.Exceptions;
 using EmailService.Domain.Interfaces;
 using EmailService.Infrastructure.Extensions;
 using EmailService.Protos;

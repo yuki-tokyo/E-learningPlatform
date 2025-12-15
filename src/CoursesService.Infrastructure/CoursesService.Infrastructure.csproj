@@ -20,6 +20,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Confluent.Kafka" Version="2.12.0" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
     <ProjectReference Include="..\PaymentService.Protos\PaymentService.Protos.csproj" />
     <ProjectReference Include="..\CoursesService.Domain\CoursesService.Domain.csproj" />
     <ProjectReference Include="..\CoursesService.Application\CoursesService.Application.csproj" />
+    <ProjectReference Include="..\SearchService.Protos\SearchService.Protos.csproj" />
   </ItemGroup>
 
 </Project>

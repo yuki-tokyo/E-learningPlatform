@@ -1,18 +1,22 @@
-﻿using CoursesService.Application.Services;
+﻿using Common.Kafka.Settings;
+using CoursesService.Application.AutoMapper;
+using CoursesService.Application.Services;
 using CoursesService.Domain.Interfaces;
 using CoursesService.Infrastructure.Data;
 using CoursesService.Infrastructure.gRPC.Clients;
+using CoursesService.Infrastructure.Kafka;
 using CoursesService.Infrastructure.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using AppCoursesService = CoursesService.Application.Services.CoursesService;
+using PaymentService.Protos;
+using SearchService.Protos;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using PaymentService.Protos;
+using AppCoursesService = CoursesService.Application.Services.CoursesService;
 
 namespace CoursesService.Infrastructure.Extensions
 {
@@ -40,7 +44,7 @@ namespace CoursesService.Infrastructure.Extensions
 
             // gRPC Server
             services.AddGrpc();
-
+            
             // DI-containers
             // Repositories
             services.AddScoped<ICoursesRepository, CoursesRepository>();
@@ -48,6 +52,19 @@ namespace CoursesService.Infrastructure.Extensions
             services.AddScoped<ICoursesService, AppCoursesService>();
             // Clients
             services.AddScoped<IPaymentClientForCourses, PaymentClientForCourses>();
+            services.AddScoped<ISearchClientForCourses, SearchClientForCourses>();
+            // Kafka
+            services.AddSingleton<IKafkaProducerForCourses, KafkaProducerForCourses>();
+
+            services.Configure<KafkaSettings>(
+                configuration.GetSection("Kafka"));
+
+            // Mapper
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AllowNullCollections = true;
+                cfg.AllowNullDestinationValues = false;
+            }, typeof(CoursesProfile).Assembly);
 
             // Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -78,6 +95,20 @@ namespace CoursesService.Infrastructure.Extensions
             services.AddGrpcClient<PaymentApi.PaymentApiClient>(o =>
             {
                 o.Address = new Uri("https://localhost:3005");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+
+            // Search Client
+            services.AddGrpcClient<SearchApi.SearchApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3006");
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
             {

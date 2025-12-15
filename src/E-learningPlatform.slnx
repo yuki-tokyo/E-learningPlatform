@@ -33,6 +33,13 @@
     <Project Path="PaymentService.Infrastructure/PaymentService.Infrastructure.csproj" Id="609caaeb-d811-49d3-b464-2735c0c95c01" />
     <Project Path="PaymentService.Protos/PaymentService.Protos.csproj" Id="19930bac-1451-47e9-a33e-02072354d12a" />
   </Folder>
+  <Folder Name="/SearchService/">
+    <Project Path="SearchService.API/SearchService.API.csproj" Id="b664a1e1-517c-4009-a11d-40bc400cd23d" />
+    <Project Path="SearchService.Application/SearchService.Application.csproj" Id="63e02a7e-e176-4916-af5f-a3b29fbb0b40" />
+    <Project Path="SearchService.Domain/SearchService.Domain.csproj" Id="c60f3b46-1cc6-409b-9533-80251c8d82c1" />
+    <Project Path="SearchService.Infrastructure/SearchService.Infrastructure.csproj" Id="b57c848a-1b77-4493-a424-04e86e955d2e" />
+    <Project Path="SearchService.Protos/SearchService.Protos.csproj" Id="523859f5-2b12-417f-882a-6645361e7aac" />
+  </Folder>
   <Folder Name="/Shared/">
     <Project Path="Common/Common.csproj" Id="305c7a6d-57ca-4cfb-926c-3d4fe515d56d" />
   </Folder>

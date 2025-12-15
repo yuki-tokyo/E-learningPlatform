@@ -7,7 +7,7 @@ namespace CoursesService.Domain.Interfaces
 {
     public interface ICoursesRepository
     {
-        Task AddCourse(string name, string description, double price, string currentUserId);
+        Task<Course> AddCourse(string name, string description, double price, string currentUserId);
         Task<int> DeleteCourse(string id, string currentUserId);
         Task<int> UpdateCourseName(string id, string name, string currentUserId);
         Task<int> UpdateCourseDescription(string id, string description, string currentUserId);

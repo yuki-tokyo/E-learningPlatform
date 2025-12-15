@@ -21,7 +21,7 @@ namespace CoursesService.Infrastructure.Repos
             this.factory = factory;
             this.paymentClient = paymentClient;
         }
-        public async Task AddCourse(string name, string description, double price, string currentUserId)
+        public async Task<Course> AddCourse(string name, string description, double price, string currentUserId)
         {
             await using var db = await factory.CreateDbContextAsync();
 
@@ -29,6 +29,8 @@ namespace CoursesService.Infrastructure.Repos
 
             await db.Courses.AddAsync(course);
             await db.SaveChangesAsync();
+
+            return course;
         }
 
         public async Task<int> BuyCourse(string id, string currentUserId)

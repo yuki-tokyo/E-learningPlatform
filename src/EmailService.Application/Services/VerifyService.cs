@@ -1,5 +1,5 @@
-﻿using EmailService.Domain.Entities;
-using EmailService.Domain.Exceptions;
+﻿using Common.Exceptions;
+using EmailService.Domain.Entities;
 using EmailService.Domain.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -2,6 +2,7 @@
 using Common.Exceptions;
 using Common.Extensions;
 using CoursesService.Application.DTO.Requests;
+using CoursesService.Domain.Exceptions;
 using CoursesService.Domain.Interfaces;
 using CoursesService.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -14,9 +15,11 @@ namespace CoursesService.API.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly ICoursesService service;
-        public CoursesController(ICoursesService service)
+        private readonly ISearchClientForCourses search;
+        public CoursesController(ICoursesService service, ISearchClientForCourses search)
         {
             this.service = service;
+            this.search = search;
         }
 
         [HttpPost("add")]
@@ -42,13 +45,33 @@ namespace CoursesService.API.Controllers
             }
         }
 
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteCourse([FromQuery] string id)
+        {
+            try
+            {
+                var userId = User.GetUserId();
+
+                await service.DeleteCourse(id, userId);
+                var response = new MessageResponse { Msg = "Курс удален!" };
+
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                response.Links.Add(new ApiLink { Rel = "Add course", Method = "POST", Href = $"{baseUrl}/api/courses/add" });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
+            }
+        }
+
         [HttpPatch("change/name")]
         public async Task<IActionResult> ChangeName([FromQuery] string id, [FromBody] ChangeCourseNameRequest dto)
         {
             try
             {
                 var userId = User.GetUserId();
-                Console.WriteLine("My id:",userId);
 
                 await service.UpdateCourseName(id, dto.Name, userId);
                 var response = new MessageResponse { Msg = "Название курса изменено!" };
@@ -127,7 +150,11 @@ namespace CoursesService.API.Controllers
             }
             catch (NotEnoughMoneyException ex)
             {
-                return BadRequest($"Error: {ex}");
+                return BadRequest(ex.Message);
+            }
+            catch (CoursePurchaseException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -160,6 +187,21 @@ namespace CoursesService.API.Controllers
                 var userId = User.GetUserId();
 
                 var courses = await service.GetCoursesIPosted(userId);
+
+                return Ok(courses);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchCourses([FromQuery] string q)
+        {
+            try
+            {
+                var courses = await search.SearchCourses(q);
 
                 return Ok(courses);
             }
