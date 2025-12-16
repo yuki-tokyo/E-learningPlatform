@@ -79,12 +79,26 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: elearnprometheus
+    ports:
+      - "9090:9090" 
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  
+      - prometheus-data:/prometheus 
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'  
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
   elasticsearch_data:
   zookeeper_data:
   kafka_data:
+  prometheus-data: 
 
 networks:
   app_network:

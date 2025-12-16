@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus.SystemMetrics;
 using SearchService.Application.AutoMapper;
 using SearchService.Application.Services;
 using SearchService.Application.Settings;
@@ -23,6 +24,9 @@ namespace SearchService.Infrastructure.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
+
+            // Prometheus
+            services.AddSystemMetrics();
 
             // gRPC Server
             services.AddGrpc();

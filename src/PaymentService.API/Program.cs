@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PaymentService.API.gRPC.Services;
 using PaymentService.Infrastructure.Extensions;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,13 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseHttpMetrics(options =>
+{
+    options.AddCustomLabel("host", context => context.Request.Host.Host);
+});
+
+app.MapMetrics();
 
 app.MapGrpcService<PaymentGrpcServer>();
 

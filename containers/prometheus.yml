@@ -1,0 +1,62 @@
+global:
+  scrape_interval: 15s  
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'auth-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3001']
+        labels:
+          service: 'auth-service'
+
+  - job_name: 'email-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3002']   
+        labels:
+          service: 'email-service'
+
+  - job_name: 'account-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3003']
+        labels:
+          service: 'account-service'
+
+  - job_name: 'courses-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3004']
+        labels:
+          service: 'courses-service'
+
+  - job_name: 'payment-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3005']
+        labels:
+          service: 'payment-service'
+
+  - job_name: 'search-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3006']
+        labels:
+          service: 'search-service'
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus.SystemMetrics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,12 +23,13 @@ namespace AccountService.Infrastructure.Extensions
             // DI-containers
             // Client
             services.AddScoped<IAccountGrpcClient, AccountGrpcClient>();
-
-
             services.AddScoped<IEmailClientForAccount, EmailClientForAccount>();
 
             // HttpContext
             services.AddHttpContextAccessor();
+
+            // Prometheus
+            services.AddSystemMetrics();
 
             // Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

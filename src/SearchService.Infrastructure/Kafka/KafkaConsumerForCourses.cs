@@ -5,6 +5,7 @@ using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Prometheus;
 using SearchService.Domain.Entities;
 using SearchService.Domain.Interfaces;
 using System;
@@ -14,15 +15,29 @@ using System.Text.Json;
 
 namespace SearchService.Infrastructure.Kafka
 {
+
     public class KafkaConsumerForCourses : BackgroundService
     {
         private readonly IConsumer<Ignore, string> consumer;
         private readonly string topic;
         private readonly IServiceScopeFactory scopeFactory;
 
+
+        private static readonly Counter messagesTotal = Metrics
+            .CreateCounter("kafka_courses_messages_total",
+                "Всего сообщений", ["method", "status"]);
+
+        private static readonly Histogram processTime = Metrics
+            .CreateHistogram("kafka_courses_process_seconds",
+                "Время обработки");
+
+        private static readonly Counter errorsTotal = Metrics
+            .CreateCounter("kafka_courses_errors_total",
+                "Ошибки обработки");
+
         public KafkaConsumerForCourses(
             IOptions<KafkaSettings> kafkaSettings,
-            IServiceScopeFactory scopeFactory) 
+            IServiceScopeFactory scopeFactory)
         {
             this.scopeFactory = scopeFactory;
 
@@ -40,6 +55,7 @@ namespace SearchService.Infrastructure.Kafka
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            Console.WriteLine("start...");
             consumer.Subscribe(topic);
 
             while (!stoppingToken.IsCancellationRequested)
@@ -50,47 +66,62 @@ namespace SearchService.Infrastructure.Kafka
 
                     if (consumeResult?.Message?.Value != null)
                     {
-                        using var scope = scopeFactory.CreateScope();
+                        using var timer = processTime.NewTimer();
+                        var method = "unknown";
+                        var status = "success";
 
-                        var service = scope.ServiceProvider
-                            .GetRequiredService<ICoursesSearchService>();
-                        var mapper = scope.ServiceProvider
-                            .GetRequiredService<IMapper>();
-
-                        var msg = JsonSerializer.Deserialize<CourseMessage>(
-                            consumeResult.Message.Value);
-
-                        switch (msg.Method)
+                        try
                         {
-                            case CourseMethods.Add:
-                                var mappedMsg = mapper.Map<CourseForSearch>(msg);
+                            using var scope = scopeFactory.CreateScope();
 
-                                await service.IndexCourse(mappedMsg);
+                            var service = scope.ServiceProvider
+                                .GetRequiredService<ICoursesSearchService>();
+                            var mapper = scope.ServiceProvider
+                                .GetRequiredService<IMapper>();
 
-                                break;
-                            case CourseMethods.UpdateName:
-                                await service.UpdateCourseName(msg.Id, msg.Name);
+                            var msg = JsonSerializer.Deserialize<CourseMessage>(
+                                consumeResult.Message.Value);
 
-                                break;
-                            case CourseMethods.UpdateDescription:
-                                await service.UpdateCourseDescription(msg.Id, msg.Description);
+                            method = msg.Method.ToString();
 
-                                break;
-                            case CourseMethods.UpdatePrice:
-                                await service.UpdateCoursePrice(msg.Id, msg.Price);
+                            switch (msg.Method)
+                            {
+                                case CourseMethods.Add:
+                                    var mappedMsg = mapper.Map<CourseForSearch>(msg);
+                                    await service.IndexCourse(mappedMsg);
+                                    Console.WriteLine("work...");
+                                    break;
+                                case CourseMethods.UpdateName:
+                                    await service.UpdateCourseName(msg.Id, msg.Name);
+                                    break;
+                                case CourseMethods.UpdateDescription:
+                                    await service.UpdateCourseDescription(msg.Id, msg.Description);
+                                    break;
+                                case CourseMethods.UpdatePrice:
+                                    await service.UpdateCoursePrice(msg.Id, msg.Price);
+                                    break;
+                                case CourseMethods.DeleteCourse:
+                                    await service.DeleteCourse(msg.Id);
+                                    break;
+                            }
 
-                                break;
-                            case CourseMethods.DeleteCourse:
-                                await service.DeleteCourse(msg.Id);
-
-                                break;
+                            consumer.Commit(consumeResult);
+                        }
+                        catch (Exception ex)
+                        {
+                            status = "error";
+                            errorsTotal.Inc();
+                            throw;
+                        }
+                        finally
+                        {
+                            messagesTotal.WithLabels(method, status).Inc();
                         }
                     }
-
-                    consumer.Commit(consumeResult);
                 }
                 catch (ConsumeException e)
                 {
+                    errorsTotal.Inc();
                     Console.WriteLine($"Ошибка: {e.Error.Reason}");
                 }
             }
@@ -99,3 +130,4 @@ namespace SearchService.Infrastructure.Kafka
         }
     }
 }
+

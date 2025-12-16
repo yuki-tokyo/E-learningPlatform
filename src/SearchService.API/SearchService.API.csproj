@@ -8,15 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+	<PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+	<PackageReference Include="prometheus-net.SystemMetrics" Version="3.1.0" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\SearchService.Infrastructure\SearchService.Infrastructure.csproj" />
 		<ProjectReference Include="..\SearchService.Protos\SearchService.Protos.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
 	</ItemGroup>
 
 </Project>

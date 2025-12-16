@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PaymentService.Protos;
+using Prometheus.SystemMetrics;
 using SearchService.Protos;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,10 @@ namespace CoursesService.Infrastructure.Extensions
 
             // gRPC Server
             services.AddGrpc();
-            
+
+            // Prometheus
+            services.AddSystemMetrics();
+
             // DI-containers
             // Repositories
             services.AddScoped<ICoursesRepository, CoursesRepository>();

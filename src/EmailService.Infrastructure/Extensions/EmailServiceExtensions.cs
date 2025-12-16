@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus.SystemMetrics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,9 @@ namespace EmailService.Infrastructure.Extensions
 
             // gRPC Server
             services.AddGrpc();
+
+            // Prometheus
+            services.AddSystemMetrics();
 
             // DI-containers
             // Repositories

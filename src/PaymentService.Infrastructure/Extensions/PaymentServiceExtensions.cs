@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PaymentService.Domain.Interfaces;
 using PaymentService.Infrastructure.gRPC.Clients;
+using Prometheus.SystemMetrics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +20,9 @@ namespace PaymentService.Infrastructure.Extensions
         {
             // gRPC Server
             services.AddGrpc();
+
+            // Prometheus
+            services.AddSystemMetrics();
 
             // DI-containers
             // Clients

@@ -1,3 +1,4 @@
+using Prometheus;
 using SearchService.API.gRPC.Services;
 using SearchService.Infrastructure.Extensions;
 
@@ -16,6 +17,13 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseHttpMetrics(options =>
+{
+    options.AddCustomLabel("host", context => context.Request.Host.Host);
+});
+
+app.MapMetrics();
 
 app.MapGrpcService<SearchGrpcServer>();
 
