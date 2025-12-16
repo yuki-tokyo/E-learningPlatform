@@ -55,7 +55,6 @@ namespace SearchService.Infrastructure.Kafka
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine("start...");
             consumer.Subscribe(topic);
 
             while (!stoppingToken.IsCancellationRequested)
@@ -89,7 +88,6 @@ namespace SearchService.Infrastructure.Kafka
                                 case CourseMethods.Add:
                                     var mappedMsg = mapper.Map<CourseForSearch>(msg);
                                     await service.IndexCourse(mappedMsg);
-                                    Console.WriteLine("work...");
                                     break;
                                 case CourseMethods.UpdateName:
                                     await service.UpdateCourseName(msg.Id, msg.Name);
@@ -107,7 +105,7 @@ namespace SearchService.Infrastructure.Kafka
 
                             consumer.Commit(consumeResult);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             status = "error";
                             errorsTotal.Inc();
