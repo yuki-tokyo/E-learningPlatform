@@ -57,6 +57,15 @@ scrape_configs:
         labels:
           service: 'search-service'
 
+  - job_name: 'lectures-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3007']
+        labels:
+          service: 'lectures-service'
+
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']

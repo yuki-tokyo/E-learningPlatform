@@ -34,8 +34,8 @@ namespace CoursesService.API.Controllers
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
                 response.Links.Add(new ApiLink { Rel = "Change course name", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/name" });
-                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/account/change/description" });
-                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/account/change/price" });
+                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/description" });
+                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/price" });
 
                 return Ok(response);
             }
@@ -77,8 +77,8 @@ namespace CoursesService.API.Controllers
                 var response = new MessageResponse { Msg = "Название курса изменено!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/account/change/description" });
-                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/account/change/price" });
+                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/description" });
+                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/price" });
 
                 return Ok(response);
             }
@@ -99,8 +99,8 @@ namespace CoursesService.API.Controllers
                 var response = new MessageResponse { Msg = "Описание курса изменено!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                response.Links.Add(new ApiLink { Rel = "Change course name", Method = "PATCH", Href = $"{baseUrl}/api/account/change/description" });
-                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/account/change/price" });
+                response.Links.Add(new ApiLink { Rel = "Change course name", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/name" });
+                response.Links.Add(new ApiLink { Rel = "Change course price", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/price" });
 
                 return Ok(response);
             }
@@ -121,8 +121,8 @@ namespace CoursesService.API.Controllers
                 var response = new MessageResponse { Msg = "Стоимость курса изменена!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                response.Links.Add(new ApiLink { Rel = "Change course name", Method = "PATCH", Href = $"{baseUrl}/api/account/change/description" });
-                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/account/change/description" });
+                response.Links.Add(new ApiLink { Rel = "Change course name", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/name" });
+                response.Links.Add(new ApiLink { Rel = "Change course description", Method = "PATCH", Href = $"{baseUrl}/api/courses/change/description" });
 
                 return Ok(response);
             }
@@ -143,8 +143,8 @@ namespace CoursesService.API.Controllers
                 var response = new MessageResponse { Msg = "Курс куплен!" };
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                response.Links.Add(new ApiLink { Rel = "Get courses I bought", Method = "GET", Href = $"{baseUrl}/api/account/my/library" });
-                response.Links.Add(new ApiLink { Rel = "Get courses I posted", Method = "GET", Href = $"{baseUrl}/api/account/my/courses" });
+                response.Links.Add(new ApiLink { Rel = "Get courses I bought", Method = "GET", Href = $"{baseUrl}/api/courses/my/library" });
+                response.Links.Add(new ApiLink { Rel = "Get courses I posted", Method = "GET", Href = $"{baseUrl}/api/courses/my/courses" });
 
                 return Ok(response);
             }

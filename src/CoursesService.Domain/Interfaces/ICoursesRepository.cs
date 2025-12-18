@@ -15,5 +15,6 @@ namespace CoursesService.Domain.Interfaces
         Task<int> BuyCourse(string id, string currentUserId);
         Task<IEnumerable<Course>> GetCoursesIBought(string currentUserId);
         Task<IEnumerable<Course>> GetCoursesIPosted(string currentUserId);
+        Task<Course?> GetCourseById(string id);
     }
 }

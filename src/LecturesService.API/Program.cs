@@ -1,5 +1,5 @@
-using CoursesService.API.gRPC.Services;
-using CoursesService.Infrastructure.Extensions;
+using LecturesService.Infrastructure.Extentions;
+using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +26,6 @@ app.UseHttpMetrics(options =>
 });
 
 app.MapMetrics();
-
-app.MapGrpcService<CoursesGrpcServer>();
 
 app.UseHttpsRedirection();
 

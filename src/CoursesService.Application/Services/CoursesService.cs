@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Exceptions;
 using Common.Kafka.Messages;
 using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
@@ -66,6 +67,18 @@ namespace CoursesService.Application.Services
             msg.Method = CourseMethods.DeleteCourse;
 
             await kafka.Produce(msg);
+        }
+
+        public async Task<Course> GetCourseById(string id)
+        {
+            var course = await repos.GetCourseById(id);
+
+            if (course == null)
+            {
+                throw new CourseNotFoundException("Курс не найден.");
+            }
+
+            return course;
         }
 
         public async Task<IEnumerable<Course>> GetCoursesIBought(string currentUserId)

@@ -21,6 +21,7 @@ message CourseResponse {
   string id = 1;
   string name = 2;
   string description = 3;
-  string price = 4;
+  double price = 4;
   optional int32 buyersCount = 5;
+  string authorId = 6;
 }

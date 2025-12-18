@@ -74,6 +74,15 @@ namespace CoursesService.Infrastructure.Repos
             return deletedCourses;
         }
 
+        public async Task<Course?> GetCourseById(string id)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            return await db.Courses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<IEnumerable<Course>> GetCoursesIBought(string currentUserId)
         {
             await using var db = await factory.CreateDbContextAsync();

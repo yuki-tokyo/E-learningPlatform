@@ -27,6 +27,12 @@
     <Project Path="EmailService.Infrastructure/EmailService.Infrastructure.csproj" Id="c0bdf302-8af9-4ad1-8358-81a3da0aed2a" />
     <Project Path="EmailService.Protos/EmailService.Protos.csproj" Id="5f3f75bf-39e2-4d98-bf1d-f73f6fe76da1" />
   </Folder>
+  <Folder Name="/LecturesService/">
+    <Project Path="LecturesService.API/LecturesService.API.csproj" Id="444bc98e-59e0-48c6-9ceb-0a68ada2758e" />
+    <Project Path="LecturesService.Application/LecturesService.Application.csproj" Id="b449ba64-f5ab-4531-8a87-05486439a264" />
+    <Project Path="LecturesService.Domain/LecturesService.Domain.csproj" Id="921a19f5-38bc-4555-b953-dc642d3578d6" />
+    <Project Path="LecturesService.Infrastructure/LecturesService.Infrastructure.csproj" Id="a4aa15a8-fe50-415a-9fb6-b75380d8ca17" />
+  </Folder>
   <Folder Name="/PaymentService/">
     <Project Path="PaymentService.API/PaymentService.API.csproj" Id="513e91e1-8495-4a72-9969-a183d59eafc6" />
     <Project Path="PaymentService.Domain/PaymentService.Domain.csproj" Id="6590958d-b2e5-41b2-9d3e-d758e70edba5" />
@@ -42,5 +48,9 @@
   </Folder>
   <Folder Name="/Shared/">
     <Project Path="Common/Common.csproj" Id="305c7a6d-57ca-4cfb-926c-3d4fe515d56d" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="CoursesService.Application.Tests/CoursesService.Application.Tests.csproj" Id="9da822fa-44e6-4402-905e-e70b4219e4ba" />
+    <Project Path="LecturesService.Application.Tests/LecturesService.Application.Tests.csproj" Id="69797dea-e7c9-480d-ac21-82c7e56ab966" />
   </Folder>
 </Solution>

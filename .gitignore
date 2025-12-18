@@ -1,3 +1,4 @@
+# ASP.NET Core Backend
 **/bin/
 **/obj/
 **/publish/
@@ -9,6 +10,7 @@
 .vscode/
 .launchSettings.json
 
+# Build outputs
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -25,6 +27,7 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
+# NuGet
 **/packages/
 *.nupkg
 .nuget/
@@ -32,55 +35,107 @@ nuget.exe
 NuGet.Config
 NuGet.targets
 
+# IDE
 .idea/
 *.swp
 *.swo
 
+# Docker
 docker-compose.override.yml
 .dockerignore
 
+# Logs
 *.log
 *.log.*
 logs/
 **/Logs/
 
+# ReSharper
 _ReSharper.Caches/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Database data directories (
 **/elasticsearch-data/
-
 **/redis-data/
-
 **/postgres-data/
 
+# ====================
+# KAFKA + ZOOKEEPER
+# ====================
+**/kafka-data/
+**/kafka-logs/
+**/zookeeper-data/
+**/zookeeper-logs/
+
+# Kafka temp files 
+.kafka/
+__consumer_offsets
+__transaction_state
+
+# Confluent 
+**/confluent-data/
+
+# ====================
+# PROMETHEUS
+# ====================
+**/prometheus-data/
+**/prometheus.yml.local
+**/prometheus-rules.yml.local
+prometheus-*.tar.gz 
+
+# Prometheus temp
+.prometheus/
+data_sd/
+
+# Alertmanager 
+**/alertmanager-data/
+**/alertmanager.yml.local
+
+
+# Environment files
 .env
 *.env.local
 *.env.production
 *.env.development
 
+# gRPC
 **/Protos/obj/
 **/*.pb.cs
 
+# Entity Framework
 **/Migrations/*.Designer.cs
 !**/Migrations/*.cs
 appsettings.Development.json
 
+# Test coverage
 coverage.json
 coverage.cobertura.xml
 **/coverage/
 *.coverage
 *.codecoverage
 
+# Temporary files
 [Tt]emp/
 [Tt]mp/
 
+# OS files
 .DS_Store
-
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+# Solution items
 *.sln.iml
 
+# VS Code history
 .history/
+
+# Docker volumes 
+**/.data/
+**/storage/
+
+*.pfx
+*.pem
+*.crt
+*.key
