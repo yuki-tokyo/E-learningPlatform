@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Common.Exceptions;
-using Common.Kafka.Messages;
+using Common.Kafka.Messages.Courses;
 using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
 using CoursesService.Domain.Interfaces;

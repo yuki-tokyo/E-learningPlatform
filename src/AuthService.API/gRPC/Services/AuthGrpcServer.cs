@@ -32,6 +32,13 @@ namespace AuthService.API.gRPC.Services
             return new Empty();
         }
 
+        public override async Task<Empty> UpdateUserLevel(UpdateUserLevelRequest request, ServerCallContext context)
+        {
+            await service.UpdateUserLevel(request.UserId, request.Points);
+
+            return new Empty();
+        }
+
         public override async Task<Empty> EditBalance(EditBalanceRequest request, ServerCallContext context)
         {
             try

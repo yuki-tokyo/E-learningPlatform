@@ -1,22 +1,20 @@
-﻿using AutoMapper;
-using Common.Kafka.Messages.Courses;
+﻿using Common.Kafka.Messages.Tests;
 using Common.Kafka.Settings;
 using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using ProgressService.Domain.Interfaces;
 using Prometheus;
-using SearchService.Domain.Entities;
-using SearchService.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Text;
 using System.Text.Json;
 
-namespace SearchService.Infrastructure.Kafka
+namespace ProgressService.Infrastructure.Kafka
 {
-
-    public class KafkaConsumerForCourses : BackgroundService
+    public class KafkaConsumerForTests : BackgroundService
     {
         private readonly IConsumer<Ignore, string> consumer;
         private readonly string topic;
@@ -35,7 +33,7 @@ namespace SearchService.Infrastructure.Kafka
             .CreateCounter("kafka_courses_errors_total",
                 "Ошибки обработки");
 
-        public KafkaConsumerForCourses(
+        public KafkaConsumerForTests(
             IOptions<KafkaSettings> kafkaSettings,
             IServiceScopeFactory scopeFactory)
         {
@@ -73,35 +71,13 @@ namespace SearchService.Infrastructure.Kafka
                         {
                             using var scope = scopeFactory.CreateScope();
 
-                            var service = scope.ServiceProvider
-                                .GetRequiredService<ICoursesSearchService>();
-                            var mapper = scope.ServiceProvider
-                                .GetRequiredService<IMapper>();
+                            var client = scope.ServiceProvider
+                                .GetRequiredService<IAuthClientForProgress>();
 
-                            var msg = JsonSerializer.Deserialize<CourseMessage>(
+                            var msg = JsonSerializer.Deserialize<TestMessage>(
                                 consumeResult.Message.Value);
 
-                            method = msg.Method.ToString();
-
-                            switch (msg.Method)
-                            {
-                                case CourseMethods.Add:
-                                    var mappedMsg = mapper.Map<CourseForSearch>(msg);
-                                    await service.IndexCourse(mappedMsg);
-                                    break;
-                                case CourseMethods.UpdateName:
-                                    await service.UpdateCourseName(msg.Id, msg.Name);
-                                    break;
-                                case CourseMethods.UpdateDescription:
-                                    await service.UpdateCourseDescription(msg.Id, msg.Description);
-                                    break;
-                                case CourseMethods.UpdatePrice:
-                                    await service.UpdateCoursePrice(msg.Id, msg.Price);
-                                    break;
-                                case CourseMethods.DeleteCourse:
-                                    await service.DeleteCourse(msg.Id);
-                                    break;
-                            }
+                            await client.UpdateUserLevel(msg.UserId, msg.Points);
 
                             consumer.Commit(consumeResult);
                         }
@@ -128,4 +104,3 @@ namespace SearchService.Infrastructure.Kafka
         }
     }
 }
-

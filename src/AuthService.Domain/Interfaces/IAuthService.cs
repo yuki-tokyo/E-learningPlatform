@@ -12,5 +12,6 @@ namespace AuthService.Domain.Interfaces
         Task ChangeEmail(string id, string email);
         Task<bool> IsThisEmailRegistered(string email);
         Task EditBalance(string currentUserId, double depositAmount, double spentAmount);
+        Task UpdateUserLevel(string userId, int points);
     }
 }

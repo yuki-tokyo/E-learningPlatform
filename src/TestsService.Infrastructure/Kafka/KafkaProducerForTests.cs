@@ -1,20 +1,20 @@
 ﻿using Common.Kafka.Settings;
 using Confluent.Kafka;
-using CoursesService.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using TestsService.Domain.Interfaces.Kafka;
 
-namespace CoursesService.Infrastructure.Kafka
+namespace TestsService.Infrastructure.Kafka
 {
-    public class KafkaProducerForCourses : IKafkaProducerForCourses, IDisposable
+    internal class KafkaProducerForTests : IKafkaProducerForTests, IDisposable
     {
         private readonly IProducer<Null, string> _producer;
         private readonly string _topic;
 
-        public KafkaProducerForCourses(IOptions<KafkaSettings> kafkaSettings)
+        public KafkaProducerForTests(IOptions<KafkaSettings> kafkaSettings)
         {
             var config = new ProducerConfig
             {

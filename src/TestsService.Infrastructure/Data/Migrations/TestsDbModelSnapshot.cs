@@ -59,7 +59,6 @@ namespace TestsService.Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.PrimitiveCollection<List<string>>("CompletedIds")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<string>("CourseId")

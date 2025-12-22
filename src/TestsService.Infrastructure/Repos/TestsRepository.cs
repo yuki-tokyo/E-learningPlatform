@@ -23,12 +23,9 @@ namespace TestsService.Infrastructure.Repos
             await using var db = await factory.CreateDbContextAsync();
 
             var test = await db.Tests
-                .Where(t => t.Id == testId)
-                .Select(t => new
-                {
-                    t.CompletedIds 
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(t => t.Id == testId);
+
+            test.CompletedIds ??= new List<string>();
 
             test.CompletedIds.Add(completedId);
 

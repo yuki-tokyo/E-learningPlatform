@@ -10,6 +10,7 @@ service AuthApi {
   rpc AddUser (AddUserRequest) returns (google.protobuf.Empty);
   rpc ChangeEmail (ChangeEmailRequest) returns (google.protobuf.Empty);
   rpc EditBalance (EditBalanceRequest) returns (google.protobuf.Empty);
+  rpc UpdateUserLevel (UpdateUserLevelRequest) returns (google.protobuf.Empty);
 }
 
 // Requests
@@ -27,6 +28,11 @@ message EditBalanceRequest {
   string userId = 1;
   optional double depositAmount = 2;
   optional double spentAmount = 3;
+}
+
+message UpdateUserLevelRequest {
+  string userId = 1;
+  int32 points = 2;
 }
 
 

@@ -12,8 +12,8 @@ using TestsService.Infrastructure.Data;
 namespace TestsService.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(TestsDb))]
-    [Migration("20251222154545_AddedCourseIdToTest")]
-    partial class AddedCourseIdToTest
+    [Migration("20251222195714_EditedComplitedIds")]
+    partial class EditedComplitedIds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,6 @@ namespace TestsService.Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.PrimitiveCollection<List<string>>("CompletedIds")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<string>("CourseId")

@@ -93,5 +93,24 @@ namespace AuthService.Infrastructure.Repos
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
         }
+
+        public async Task UpdateUserLevel(string userId, int points)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            var user = await db.Users
+                .FirstAsync(u => u.Id == userId);
+
+            user.Points += points;
+
+            if (user.Points >= user.PointsRemainingToNewLevel)
+            {
+                user.Points -= user.PointsRemainingToNewLevel;
+                user.Level++;
+                user.PointsRemainingToNewLevel += 45;
+            }
+
+            await db.SaveChangesAsync();
+        }
     }
 }

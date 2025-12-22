@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Common.Kafka.Messages;
+using Common.Kafka.Messages.Courses;
 using SearchService.Domain.Entities;
 using System;
 using System.Collections.Generic;

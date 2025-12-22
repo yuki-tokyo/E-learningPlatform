@@ -1,4 +1,5 @@
-﻿using CoursesService.Protos;
+﻿using Common.Kafka.Settings;
+using CoursesService.Protos;
 using LecturesService.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,13 @@ using System.Collections.Generic;
 using System.Text;
 using TestsService.Application.Services;
 using TestsService.Domain.Interfaces.Courses;
+using TestsService.Domain.Interfaces.Kafka;
 using TestsService.Domain.Interfaces.Lectures;
 using TestsService.Domain.Interfaces.Questions;
 using TestsService.Domain.Interfaces.Tests;
 using TestsService.Infrastructure.Data;
 using TestsService.Infrastructure.gRPC.Clients;
+using TestsService.Infrastructure.Kafka;
 using TestsService.Infrastructure.Repos;
 using AppTestsService = TestsService.Application.Services.TestsService;
 
@@ -59,6 +62,12 @@ namespace TestsService.Infrastructure.Extensions
             // Clients
             services.AddScoped<ILecturesClientForTests, LecturesClientForTests>();
             services.AddScoped<ICoursesClientForTests, CoursesClientForTests>();
+
+            // Kafka
+            services.AddSingleton<IKafkaProducerForTests, KafkaProducerForTests>();
+
+            services.Configure<KafkaSettings>(
+                configuration.GetSection("Kafka"));
 
             // Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

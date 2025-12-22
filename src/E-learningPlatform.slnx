@@ -40,6 +40,11 @@
     <Project Path="PaymentService.Infrastructure/PaymentService.Infrastructure.csproj" Id="609caaeb-d811-49d3-b464-2735c0c95c01" />
     <Project Path="PaymentService.Protos/PaymentService.Protos.csproj" Id="19930bac-1451-47e9-a33e-02072354d12a" />
   </Folder>
+  <Folder Name="/ProgressService/">
+    <Project Path="ProgressService.API/ProgressService.API.csproj" Id="a7fb1c68-d42d-416d-9681-ed87cbd3fc00" />
+    <Project Path="ProgressService.Domain/ProgressService.Domain.csproj" Id="d6b59466-688b-43bf-a843-aaf61c420f3e" />
+    <Project Path="ProgressService.Infrastructure/ProgressService.Infrastructure.csproj" Id="4c9f8ee3-ea9f-4521-bce6-f5c341588a04" />
+  </Folder>
   <Folder Name="/SearchService/">
     <Project Path="SearchService.API/SearchService.API.csproj" Id="b664a1e1-517c-4009-a11d-40bc400cd23d" />
     <Project Path="SearchService.Application/SearchService.Application.csproj" Id="63e02a7e-e176-4916-af5f-a3b29fbb0b40" />

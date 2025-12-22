@@ -1,9 +1,11 @@
 ﻿using Common.Exceptions;
+using Common.Kafka.Messages.Tests;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
 using TestsService.Domain.Interfaces.Courses;
+using TestsService.Domain.Interfaces.Kafka;
 using TestsService.Domain.Interfaces.Lectures;
 using TestsService.Domain.Interfaces.Questions;
 using TestsService.Domain.Interfaces.Tests;
@@ -14,6 +16,7 @@ namespace TestsService.Application.Services
     {
         private readonly ILecturesClientForTests lecturesClient;
         private readonly ICoursesClientForTests coursesClient;
+        private readonly IKafkaProducerForTests kafka;
         private readonly ITestsRepository repos;
         private readonly IQuestionsRepository qrepos;
 
@@ -21,12 +24,14 @@ namespace TestsService.Application.Services
             (ILecturesClientForTests lecturesClient, 
             ITestsRepository repos, 
             IQuestionsRepository qrepos, 
-            ICoursesClientForTests coursesClient)
+            ICoursesClientForTests coursesClient,
+            IKafkaProducerForTests kafka)
         {
             this.lecturesClient = lecturesClient;
             this.repos = repos;
             this.qrepos = qrepos;
             this.coursesClient = coursesClient;
+            this.kafka = kafka;
         }
 
         public async Task AddTest(string lectureId, string name, string currentUserId)
@@ -90,7 +95,7 @@ namespace TestsService.Application.Services
 
             var buyers = await coursesClient.GetCourseBuyersIds(test.CourseId);
 
-            if (!buyers.Contains(currentUserId))
+            if (!buyers.Contains(currentUserId) && test.AuthorId != currentUserId)
             {
                 throw new TestException("Ошибка получения доступа к тесту.");
             }
@@ -111,6 +116,8 @@ namespace TestsService.Application.Services
             if (correct == questions.Count)
             {
                 await repos.AddCompletedTest(testId, currentUserId);
+                var msg = new TestMessage { UserId = currentUserId, Points = 40 };
+                await kafka.Produce(msg);
                 return true;
             }
 

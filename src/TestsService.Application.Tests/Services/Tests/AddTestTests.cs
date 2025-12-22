@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TestsService.Domain.Interfaces.Courses;
+using TestsService.Domain.Interfaces.Kafka;
 using TestsService.Domain.Interfaces.Lectures;
 using TestsService.Domain.Interfaces.Questions;
 using TestsService.Domain.Interfaces.Tests;
@@ -18,6 +19,7 @@ namespace TestsService.Application.Tests.Services.Tests
         private readonly Mock<ICoursesClientForTests> _coursesClient;
         private readonly Mock<ITestsRepository> _repos;
         private readonly Mock<IQuestionsRepository> _qrepos;
+        private readonly Mock<IKafkaProducerForTests> _kafka;
         private readonly AppTestsService _service;
 
         public AddTestTests()
@@ -26,8 +28,9 @@ namespace TestsService.Application.Tests.Services.Tests
             _lecturesClient = new Mock<ILecturesClientForTests>();
             _coursesClient = new Mock<ICoursesClientForTests>();
             _qrepos = new Mock<IQuestionsRepository>();
+            _kafka = new Mock<IKafkaProducerForTests>();
             _service = new AppTestsService
-                (_lecturesClient.Object, _repos.Object, _qrepos.Object, _coursesClient.Object);
+                (_lecturesClient.Object, _repos.Object, _qrepos.Object, _coursesClient.Object, _kafka.Object);
         }
 
 

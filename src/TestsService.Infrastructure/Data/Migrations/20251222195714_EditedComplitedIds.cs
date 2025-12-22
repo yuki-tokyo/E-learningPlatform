@@ -6,35 +6,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TestsService.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedCourseIdToTest : Migration
+    public partial class EditedComplitedIds : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<List<string>>(
+            migrationBuilder.AlterColumn<List<string>>(
                 name: "CompletedIds",
                 table: "Tests",
                 type: "text[]",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "CourseId",
-                table: "Tests",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
+                nullable: true,
+                oldClrType: typeof(List<string>),
+                oldType: "text[]");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.AlterColumn<List<string>>(
                 name: "CompletedIds",
-                table: "Tests");
-
-            migrationBuilder.DropColumn(
-                name: "CourseId",
-                table: "Tests");
+                table: "Tests",
+                type: "text[]",
+                nullable: false,
+                oldClrType: typeof(List<string>),
+                oldType: "text[]",
+                oldNullable: true);
         }
     }
 }

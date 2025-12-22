@@ -10,7 +10,7 @@ namespace TestsService.Domain.Entities
         public string? Name { get; set; }
         public string? LectureId { get; set; }
         public string? AuthorId { get; set; }
-        public List<string> CompletedIds { get; set; } = new List<string>();
+        public List<string>? CompletedIds { get; set; }
         public required string CourseId { get; set; }
         public List<Question> Questions { get; set; } = new List<Question>();
     }

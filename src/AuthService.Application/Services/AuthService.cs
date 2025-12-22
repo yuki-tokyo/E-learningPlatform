@@ -73,5 +73,10 @@ namespace AuthService.Application.Services
 
             return msg;
         }
+
+        public async Task UpdateUserLevel(string userId, int points)
+        {
+            await repos.UpdateUserLevel(userId, points);
+        }
     }
 }
