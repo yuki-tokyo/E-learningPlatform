@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "LecturesService.Protos";
+
+package lectures;
+
+service LecturesApi {
+  rpc GetLectureById (GetLectureByIdRequest) returns (LectureResponse);
+}
+
+// Requests
+message GetLectureByIdRequest {
+  string id = 1;
+}
+
+
+// Responses
+message LectureResponse {
+  string id = 1;
+  string name = 2;
+  string content = 3;
+  string courseId = 4;
+  string authorId = 5;
+}

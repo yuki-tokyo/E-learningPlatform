@@ -1,10 +1,10 @@
-﻿using LecturesService.Domain.Exceptions;
-using LecturesService.Domain.Interfaces;
+﻿using LecturesService.Domain.Interfaces;
 using Moq;
 using AppLecturesService = LecturesService.Application.Services.LecturesService;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Exceptions;
 
 namespace LecturesService.Application.Tests.Services
 {
@@ -31,7 +31,7 @@ namespace LecturesService.Application.Tests.Services
 
             _repositoryMock
                 .Setup(x => x.ChangeLectureContent(lectureId, currentUserId, newContent))
-                .ReturnsAsync(1); // 1 запись обновлена
+                .ReturnsAsync(1); 
 
             // Act
             await _service.ChangeLectureContent(lectureId, currentUserId, newContent);
@@ -51,7 +51,7 @@ namespace LecturesService.Application.Tests.Services
 
             _repositoryMock
                 .Setup(x => x.ChangeLectureContent(lectureId, currentUserId, newContent))
-                .ReturnsAsync(0); // 0 записей обновлено
+                .ReturnsAsync(0); 
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<LectureException>(() =>

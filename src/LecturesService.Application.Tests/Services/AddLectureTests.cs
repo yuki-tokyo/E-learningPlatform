@@ -1,10 +1,10 @@
-﻿using LecturesService.Domain.Exceptions;
-using LecturesService.Domain.Interfaces;
+﻿using LecturesService.Domain.Interfaces;
 using Moq;
 using AppLecturesService = LecturesService.Application.Services.LecturesService;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Exceptions;
 
 namespace LecturesService.Application.Tests.Services
 {
@@ -24,7 +24,7 @@ namespace LecturesService.Application.Tests.Services
         [Fact]
         public async Task AddLecture_WhenAuthorMatchesCurrentUser_ShouldAddLecture()
         {
-
+            // Arrange
             var courseId = "course-123";
             var currentUserId = "user-456";
             var name = "Лекция 1";

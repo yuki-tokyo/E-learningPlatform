@@ -33,9 +33,9 @@ namespace LecturesService.Infrastructure.Repos
             await using var db = await factory.CreateDbContextAsync();
 
             var updatedLectures = await db.Lectures
-                .Where(c => c.Id == lectureId && c.AuthorId == currentUserId)
+                .Where(l => l.Id == lectureId && l.AuthorId == currentUserId)
                 .ExecuteUpdateAsync(setters =>
-                    setters.SetProperty(c => c.Content, newContent));
+                    setters.SetProperty(l => l.Content, newContent));
 
             return updatedLectures;
         }
@@ -45,9 +45,9 @@ namespace LecturesService.Infrastructure.Repos
             await using var db = await factory.CreateDbContextAsync();
 
             var updatedLectures = await db.Lectures
-                .Where(c => c.Id == lectureId && c.AuthorId == currentUserId)
+                .Where(l => l.Id == lectureId && l.AuthorId == currentUserId)
                 .ExecuteUpdateAsync(setters =>
-                    setters.SetProperty(c => c.Name, newName));
+                    setters.SetProperty(l => l.Name, newName));
 
             return updatedLectures;
         }
@@ -57,10 +57,29 @@ namespace LecturesService.Infrastructure.Repos
             await using var db = await factory.CreateDbContextAsync();
 
             var deletedLectures = await db.Lectures
-                .Where(c => c.Id == lectureId && c.AuthorId == currentUserId)
+                .Where(l => l.Id == lectureId && l.AuthorId == currentUserId)
                 .ExecuteDeleteAsync();
 
             return deletedLectures;
+        }
+
+        public async Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            return await db.Lectures
+                .AsNoTracking()
+                .Where(l => l.CourseId == courseId)
+                .ToListAsync();
+        }
+
+        public async Task<Lecture?> GetLectureById(string lectureId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            return await db.Lectures
+                .AsNoTracking()
+                .FirstOrDefaultAsync(l => l.Id == lectureId);
         }
     }
 }

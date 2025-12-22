@@ -36,5 +36,23 @@ namespace LecturesService.Infrastructure.gRPC.Clients
             }
         }
 
+        public async Task<IEnumerable<string>> GetCourseBuyersIds(string courseId)
+        {
+            try
+            {
+                var response = await client.GetCourseByIdAsync(new GetCourseByIdRequest { Id = courseId });
+
+                return response.BuyersIds;
+            }
+            catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+            {
+                throw new CourseNotFoundException(ex.Status.Detail);
+            }
+            catch (RpcException ex)
+            {
+                throw new Exception($"Error: {ex}");
+            }
+        }
+
     }
 }

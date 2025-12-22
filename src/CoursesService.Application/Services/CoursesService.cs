@@ -4,6 +4,7 @@ using Common.Kafka.Messages;
 using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
 using CoursesService.Domain.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -93,6 +94,12 @@ namespace CoursesService.Application.Services
 
         public async Task UpdateCourseDescription(string id, string description, string currentUserId)
         {
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Описание курса не может быть пустым", nameof(description));
+
+            if (description.Length > 5000)
+                throw new ArgumentException("Слишком длинное описание курса", nameof(description));
+
             var result = await repos.UpdateCourseDescription(id, description, currentUserId);
 
             if (result == 0)
@@ -109,6 +116,12 @@ namespace CoursesService.Application.Services
 
         public async Task UpdateCourseName(string id, string name, string currentUserId)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Имя курса не может быть пустым", nameof(name));
+
+            if (name.Length > 5000)
+                throw new ArgumentException("Слишком длинное имя курса", nameof(name));
+
             var result = await repos.UpdateCourseName(id, name, currentUserId);
 
             if (result == 0)
@@ -125,6 +138,11 @@ namespace CoursesService.Application.Services
 
         public async Task UpdateCoursePrice(string id, double price, string currentUserId)
         {
+            if (price < 0)
+            {
+                price = 0;
+            }
+
             var result = await repos.UpdateCoursePrice(id, price, currentUserId);
 
             if (result == 0)

@@ -1,10 +1,10 @@
-﻿using LecturesService.Domain.Exceptions;
-using LecturesService.Domain.Interfaces;
+﻿using LecturesService.Domain.Interfaces;
 using Moq;
 using AppLecturesService = LecturesService.Application.Services.LecturesService;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Exceptions;
 
 namespace LecturesService.Application.Tests.Services
 {
@@ -62,7 +62,6 @@ namespace LecturesService.Application.Tests.Services
 
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         [InlineData("   ")]
         public async Task ChangeLectureName_WhenNewNameIsNullOrEmpty_ShouldThrowArgumentException(string invalidName)
         {

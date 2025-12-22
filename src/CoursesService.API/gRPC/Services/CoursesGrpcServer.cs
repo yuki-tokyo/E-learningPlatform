@@ -20,7 +20,7 @@ namespace CoursesService.API.gRPC.Services
             {
                 var response = await service.GetCourseById(request.Id);
 
-                return new CourseResponse
+                var courseResponse = new CourseResponse
                 {
                     Id = response.Id,
                     AuthorId = response.AuthorId,
@@ -29,6 +29,10 @@ namespace CoursesService.API.gRPC.Services
                     Price = response.Price,
                     BuyersCount = response.BuyersCount
                 };
+
+                courseResponse.BuyersIds.AddRange(response.BuyersIds);
+
+                return courseResponse;
             }
             catch (CourseNotFoundException ex)
             {

@@ -1,4 +1,5 @@
-﻿using LecturesService.Domain.Exceptions;
+﻿using Common.Exceptions;
+using LecturesService.Domain.Entities;
 using LecturesService.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,10 @@ namespace LecturesService.Application.Services
         public async Task AddLecture(string courseId, string currentUserId, string name, string content)
         {
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(content))
-                throw new ArgumentException("Имя/содержание лекции не могут быть пустыми");
+                throw new ArgumentException("Название/содержание лекции не могут быть пустыми");
 
             if (name.Length > 1000)
-                throw new ArgumentException("Слишком длинное имя лекции", nameof(name));
+                throw new ArgumentException("Слишком длинное название лекции", nameof(name));
 
             if (content.Length > 20000)
                 throw new ArgumentException("Слишком длинное содержание лекции", nameof(content));
@@ -56,10 +57,10 @@ namespace LecturesService.Application.Services
         public async Task ChangeLectureName(string lectureId, string currentUserId, string newName)
         {
             if (string.IsNullOrWhiteSpace(newName))
-                throw new ArgumentException("Имя лекции не может быть пустым", nameof(newName));
+                throw new ArgumentException("Название лекции не может быть пустым", nameof(newName));
 
             if (newName.Length > 1000)
-                throw new ArgumentException("Слишком длинное имя лекции", nameof(newName));
+                throw new ArgumentException("Слишком длинное название лекции", nameof(newName));
 
             var response = await repos.ChangeLectureName(lectureId, currentUserId, newName);
 
@@ -77,6 +78,31 @@ namespace LecturesService.Application.Services
             {
                 throw new LectureException("Лекция не найдена/не принадлежит вам.");
             }
+        }
+
+        public async Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId, string currentUserId)
+        {
+            var buyersIds = await coursesClient.GetCourseBuyersIds(courseId);
+            var authorId = await coursesClient.GetCourseAuthorId(courseId);
+
+            if (currentUserId != authorId && !buyersIds.Contains(currentUserId))
+            {
+                throw new LectureException("Для получения доступа к лекциям купите курс!");
+            }
+
+            return await repos.GetAllLecturesForCourse(courseId);
+        }
+
+        public async Task<Lecture> GetLectureById(string lectureId)
+        {
+            var lecture = await repos.GetLectureById(lectureId);
+
+            if (lecture == null)
+            {
+                throw new LectureException("Лекция не найдена.");
+            }
+
+            return lecture;
         }
     }
 }

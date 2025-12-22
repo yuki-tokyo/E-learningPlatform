@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LecturesService.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,5 +11,7 @@ namespace LecturesService.Domain.Interfaces
         Task ChangeLectureName(string lectureId, string currentUserId, string newName);
         Task ChangeLectureContent(string lectureId, string currentUserId, string newContent);
         Task DeleteLecture(string lectureId, string currentUserId);
+        Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId, string currentUserId);
+        Task<Lecture> GetLectureById(string lectureId);
     }
 }

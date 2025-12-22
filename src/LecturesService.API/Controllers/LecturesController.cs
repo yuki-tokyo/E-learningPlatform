@@ -2,7 +2,6 @@
 using Common.Exceptions;
 using Common.Extensions;
 using LecturesService.Application.DTO.Requests;
-using LecturesService.Domain.Exceptions;
 using LecturesService.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +42,10 @@ namespace LecturesService.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex}");
@@ -65,6 +68,10 @@ namespace LecturesService.API.Controllers
                 return Ok(response);
             }
             catch (LectureException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -93,6 +100,10 @@ namespace LecturesService.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex}");
@@ -115,6 +126,31 @@ namespace LecturesService.API.Controllers
                 return Ok(response);
             }
             catch (LectureException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
+            }
+        }
+
+        [HttpGet("bycourse")]
+        public async Task<IActionResult> GetAllLecturesForCourse([FromQuery] string id)
+        {
+            try
+            {
+                var userId = User.GetUserId();
+
+                var response = await service.GetAllLecturesForCourse(id, userId);
+
+                return Ok(response);
+            }
+            catch (LectureException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }

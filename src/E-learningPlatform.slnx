@@ -32,6 +32,7 @@
     <Project Path="LecturesService.Application/LecturesService.Application.csproj" Id="b449ba64-f5ab-4531-8a87-05486439a264" />
     <Project Path="LecturesService.Domain/LecturesService.Domain.csproj" Id="921a19f5-38bc-4555-b953-dc642d3578d6" />
     <Project Path="LecturesService.Infrastructure/LecturesService.Infrastructure.csproj" Id="a4aa15a8-fe50-415a-9fb6-b75380d8ca17" />
+    <Project Path="LecturesService.Protos/LecturesService.Protos.csproj" Id="1a0fff36-b6de-471b-abb9-0f98ca522c34" />
   </Folder>
   <Folder Name="/PaymentService/">
     <Project Path="PaymentService.API/PaymentService.API.csproj" Id="513e91e1-8495-4a72-9969-a183d59eafc6" />
@@ -52,5 +53,12 @@
   <Folder Name="/Tests/">
     <Project Path="CoursesService.Application.Tests/CoursesService.Application.Tests.csproj" Id="9da822fa-44e6-4402-905e-e70b4219e4ba" />
     <Project Path="LecturesService.Application.Tests/LecturesService.Application.Tests.csproj" Id="69797dea-e7c9-480d-ac21-82c7e56ab966" />
+    <Project Path="TestsService.Application.Tests/TestsService.Application.Tests.csproj" Id="17a781aa-91ac-444c-9428-2be58a65422a" />
+  </Folder>
+  <Folder Name="/TestsService/">
+    <Project Path="TestsService.API/TestsService.API.csproj" Id="0153995a-4482-4af2-89d6-3d9051abfd09" />
+    <Project Path="TestsService.Application/TestsService.Application.csproj" Id="e435e4c0-e8b3-42ff-93a4-ddada944fa04" />
+    <Project Path="TestsService.Domain/TestsService.Domain.csproj" Id="6bfe2d68-e901-41bb-a5ba-7c46230dd20a" />
+    <Project Path="TestsService.Infrastructure/TestsService.Infrastructure.csproj" Id="ea1f57a3-70b5-4fe4-aa17-323e55c57d3a" />
   </Folder>
 </Solution>

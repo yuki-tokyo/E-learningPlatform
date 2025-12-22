@@ -1,3 +1,4 @@
+using LecturesService.API.gRPC.Services;
 using LecturesService.Infrastructure.Extentions;
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
@@ -26,6 +27,8 @@ app.UseHttpMetrics(options =>
 });
 
 app.MapMetrics();
+
+app.MapGrpcService<LecturesGrpcServer>();
 
 app.UseHttpsRedirection();
 

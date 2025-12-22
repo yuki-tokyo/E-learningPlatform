@@ -1,10 +1,10 @@
-﻿using LecturesService.Domain.Exceptions;
-using LecturesService.Domain.Interfaces;
+﻿using LecturesService.Domain.Interfaces;
 using Moq;
 using AppLecturesService = LecturesService.Application.Services.LecturesService;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Exceptions;
 
 namespace LecturesService.Application.Tests.Services
 {
@@ -67,7 +67,7 @@ namespace LecturesService.Application.Tests.Services
 
             _repositoryMock
                 .Setup(x => x.DeleteLecture(lectureId, currentUserId))
-                .ReturnsAsync(1); // только 1 должна удалиться
+                .ReturnsAsync(1); 
 
             // Act
             await _service.DeleteLecture(lectureId, currentUserId);

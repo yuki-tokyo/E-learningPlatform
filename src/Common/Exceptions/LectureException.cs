@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LecturesService.Domain.Exceptions
+namespace Common.Exceptions
 {
     public class LectureException : Exception
     {

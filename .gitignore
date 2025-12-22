@@ -92,7 +92,6 @@ data_sd/
 **/alertmanager-data/
 **/alertmanager.yml.local
 
-
 # Environment files
 .env
 *.env.local
@@ -107,6 +106,13 @@ data_sd/
 **/Migrations/*.Designer.cs
 !**/Migrations/*.cs
 appsettings.Development.json
+
+# ====================
+# UNIT TESTS
+# ====================
+# Test results
+**/TestResults/
+*.trx
 
 # Test coverage
 coverage.json

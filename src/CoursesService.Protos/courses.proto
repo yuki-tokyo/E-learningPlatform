@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto"; 
-
 option csharp_namespace = "CoursesService.Protos";
 
 package courses;
@@ -24,4 +22,5 @@ message CourseResponse {
   double price = 4;
   optional int32 buyersCount = 5;
   string authorId = 6;
+  repeated string buyersIds = 7;
 }
