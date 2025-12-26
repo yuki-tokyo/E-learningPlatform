@@ -1,6 +1,6 @@
 ﻿using Common.Kafka.Settings;
 using Confluent.Kafka;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Kafka;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

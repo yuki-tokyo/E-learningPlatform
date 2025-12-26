@@ -8,7 +8,7 @@ namespace TestsService.Domain.Entities
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string? Name { get; set; }
-        public string? LectureId { get; set; }
+        public required string LectureId { get; set; }
         public string? AuthorId { get; set; }
         public List<string>? CompletedIds { get; set; }
         public required string CourseId { get; set; }

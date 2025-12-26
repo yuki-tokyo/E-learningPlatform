@@ -65,5 +65,6 @@
     <Project Path="TestsService.Application/TestsService.Application.csproj" Id="e435e4c0-e8b3-42ff-93a4-ddada944fa04" />
     <Project Path="TestsService.Domain/TestsService.Domain.csproj" Id="6bfe2d68-e901-41bb-a5ba-7c46230dd20a" />
     <Project Path="TestsService.Infrastructure/TestsService.Infrastructure.csproj" Id="ea1f57a3-70b5-4fe4-aa17-323e55c57d3a" />
+    <Project Path="TestsService.Protos/TestsService.Protos.csproj" Id="e703d888-93dd-4226-b176-2df4b63e1d22" />
   </Folder>
 </Solution>

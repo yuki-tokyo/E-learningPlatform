@@ -1,11 +1,14 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto"; 
+
 option csharp_namespace = "LecturesService.Protos";
 
 package lectures;
 
 service LecturesApi {
   rpc GetLectureById (GetLectureByIdRequest) returns (LectureResponse);
+  rpc DeleteLecturesByCourseId (DeleteLecturesByCourseIdRequest) returns (google.protobuf.Empty);
 }
 
 // Requests
@@ -13,6 +16,10 @@ message GetLectureByIdRequest {
   string id = 1;
 }
 
+message DeleteLecturesByCourseIdRequest {
+  string courseId = 1;
+  string userId = 2;
+}
 
 // Responses
 message LectureResponse {

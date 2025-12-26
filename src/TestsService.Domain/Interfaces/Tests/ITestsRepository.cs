@@ -10,6 +10,8 @@ namespace TestsService.Domain.Interfaces.Tests
         Task AddTest(string lectureId, string courseId, string name, string currentUserId);
         Task<int> ChangeTestName(string testId, string currentUserId, string newName);
         Task<int> DeleteTest(string testId, string currentUserId);
+        Task DeleteTestsByCourseId(string courseId, string currentUserId);
+        Task DeleteTestsByLectureId(string lectureId, string currentUserId);
         Task<Test?> GetTestById(string testId);
         Task AddCompletedTest(string testId, string completedId);
     }

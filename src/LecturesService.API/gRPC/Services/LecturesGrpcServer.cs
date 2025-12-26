@@ -1,4 +1,5 @@
 ﻿using Common.Exceptions;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using LecturesService.Domain.Interfaces;
 using LecturesService.Protos;
@@ -31,6 +32,20 @@ namespace LecturesService.API.gRPC.Services
             catch (LectureException ex)
             {
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
+            }
+        }
+
+        public override async Task<Empty> DeleteLecturesByCourseId(DeleteLecturesByCourseIdRequest request, ServerCallContext context)
+        {
+            try
+            {
+                await service.DeleteLecturesByCourseId(request.CourseId, request.UserId);
+
+                return new Empty();
+            }
+            catch (LectureException ex)
+            {
+                throw new RpcException(new Status(StatusCode.FailedPrecondition, ex.Message));
             }
         }
     }

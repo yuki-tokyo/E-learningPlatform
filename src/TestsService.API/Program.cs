@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
+using TestsService.API.gRPC.Services;
 using TestsService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ app.UseHttpMetrics(options =>
 });
 
 app.MapMetrics();
+
+app.MapGrpcService<TestsGrpcServer>();
 
 app.UseHttpsRedirection();
 

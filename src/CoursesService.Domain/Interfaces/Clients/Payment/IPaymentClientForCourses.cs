@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CoursesService.Domain.Interfaces
+namespace CoursesService.Domain.Interfaces.Clients.Payment
 {
     public interface IPaymentClientForCourses
     {

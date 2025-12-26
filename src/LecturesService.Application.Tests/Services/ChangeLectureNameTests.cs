@@ -12,13 +12,15 @@ namespace LecturesService.Application.Tests.Services
     {
         private readonly Mock<ICoursesClientForLectures> _coursesClientMock;
         private readonly Mock<ILecturesRepository> _repositoryMock;
+        private readonly Mock<ITestsClientForLectures> _testsClient;
         private readonly AppLecturesService _service;
 
         public ChangeLectureNameTests()
         {
             _coursesClientMock = new Mock<ICoursesClientForLectures>();
             _repositoryMock = new Mock<ILecturesRepository>();
-            _service = new AppLecturesService(_coursesClientMock.Object, _repositoryMock.Object);
+            _testsClient = new Mock<ITestsClientForLectures>();
+            _service = new AppLecturesService(_coursesClientMock.Object, _repositoryMock.Object, _testsClient.Object);
         }
 
         [Fact]

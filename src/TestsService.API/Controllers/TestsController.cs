@@ -42,6 +42,10 @@ namespace TestsService.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (LectureException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex}");

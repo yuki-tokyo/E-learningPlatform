@@ -3,7 +3,10 @@ using Common.Exceptions;
 using Common.Kafka.Messages.Courses;
 using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Lectures;
+using CoursesService.Domain.Interfaces.Clients.Tests;
+using CoursesService.Domain.Interfaces.Courses;
+using CoursesService.Domain.Interfaces.Kafka;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
@@ -15,16 +18,22 @@ namespace CoursesService.Application.Services
     {
         private readonly ICoursesRepository repos;
         private readonly IKafkaProducerForCourses kafka;
+        private readonly ILecturesClientForCourses lecturesClient;
+        private readonly ITestsClientForCourses testsClient;
         private readonly IMapper mapper;
 
         public CoursesService
             (ICoursesRepository repos, 
             IKafkaProducerForCourses kafka,
-            IMapper mapper)
+            IMapper mapper,
+            ILecturesClientForCourses lecturesClient,
+            ITestsClientForCourses testsClient)
         {
             this.repos = repos;
             this.kafka = kafka;
             this.mapper = mapper;
+            this.lecturesClient = lecturesClient;
+            this.testsClient = testsClient;
         }
         public async Task AddCourse(string name, string description, double price, string currentUserId)
         {
@@ -62,6 +71,10 @@ namespace CoursesService.Application.Services
             {
                 throw new CourseChangesException("Курс не найден/не принадлежит вам.");
             }
+
+            await lecturesClient.DeleteLecturesByCourseId(id, currentUserId);
+
+            await testsClient.DeleteTestsByCourseId(id, currentUserId);
 
             var msg = new CourseMessage { Id = id };
 

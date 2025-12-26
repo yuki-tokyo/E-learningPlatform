@@ -37,13 +37,13 @@ namespace TestsService.Application.Services
                 throw new QuestionException("Некорректно указан номер правильного ответа.");
             }
 
-            var response = await testRepos.GetTestById(testId);
+            var test = await testRepos.GetTestById(testId);
 
-            if (response == null)
+            if (test == null)
             {
                 throw new QuestionException("Тест не найден");
             }
-            else if (response.AuthorId != currentUserId)
+            else if (test.AuthorId != currentUserId)
             {
                 throw new QuestionException("Нельзя добавить вопрос к чужому тесту");
             }

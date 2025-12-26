@@ -1,6 +1,7 @@
 ﻿using CoursesService.Domain.Entities;
 using CoursesService.Domain.Exceptions;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Payment;
+using CoursesService.Domain.Interfaces.Courses;
 using CoursesService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;

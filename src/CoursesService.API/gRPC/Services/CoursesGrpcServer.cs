@@ -1,5 +1,5 @@
 ﻿using Common.Exceptions;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Courses;
 using CoursesService.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

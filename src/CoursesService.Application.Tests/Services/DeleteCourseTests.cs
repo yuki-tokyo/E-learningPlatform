@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using CoursesService.Domain.Exceptions;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Lectures;
+using CoursesService.Domain.Interfaces.Clients.Tests;
+using CoursesService.Domain.Interfaces.Courses;
+using CoursesService.Domain.Interfaces.Kafka;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,8 @@ namespace CoursesService.Application.Tests.Services
         private readonly Mock<ICoursesRepository> _repos;
         private readonly Mock<IKafkaProducerForCourses> _producer;
         private readonly Mock<IMapper> _mapper;
+        private readonly Mock<ILecturesClientForCourses> _lecturesClient;
+        private readonly Mock<ITestsClientForCourses> _testsClient;
         private readonly AppCoursesService _service;
 
         public DeleteCourseTests()
@@ -21,7 +26,9 @@ namespace CoursesService.Application.Tests.Services
             _repos = new Mock<ICoursesRepository>();
             _producer = new Mock<IKafkaProducerForCourses>();
             _mapper = new Mock<IMapper>();
-            _service = new AppCoursesService(_repos.Object, _producer.Object, _mapper.Object);
+            _lecturesClient = new Mock<ILecturesClientForCourses>();
+            _testsClient = new Mock<ITestsClientForCourses>();
+            _service = new AppCoursesService(_repos.Object, _producer.Object, _mapper.Object, _lecturesClient.Object, _testsClient.Object);
         }
 
         [Fact]

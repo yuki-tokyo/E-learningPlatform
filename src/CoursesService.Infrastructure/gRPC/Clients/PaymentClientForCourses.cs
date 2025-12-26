@@ -1,5 +1,5 @@
 ﻿using Common.Exceptions;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Payment;
 using Grpc.Core;
 using PaymentService.Protos;
 using System;

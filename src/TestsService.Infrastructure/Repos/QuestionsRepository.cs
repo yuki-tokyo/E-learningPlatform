@@ -19,7 +19,10 @@ namespace TestsService.Infrastructure.Repos
             this.factory = factory;
         }
 
-        public async Task AddQuestion(string testId, List<string> answerOptions, int rightAnswer, string content, string currentUserId)
+        public async Task AddQuestion
+            (string testId, List<string> answerOptions, 
+            int rightAnswer, string content, 
+            string currentUserId)
         {
             await using var db = await factory.CreateDbContextAsync();
 
@@ -46,6 +49,17 @@ namespace TestsService.Infrastructure.Repos
                     setters.SetProperty(q => q.Content, newContent));
 
             return updatedQuestions;
+        }
+
+        public async Task<int> DeleteQuestionsByTestId(string testId, string currentUserId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            var deletedQuestions = await db.Questions
+                .Where(q => q.TestId == testId && q.AuthorId == currentUserId)
+                .ExecuteDeleteAsync();
+
+            return deletedQuestions;
         }
 
         public async Task<int> DeleteQuestion(string questionId, string currentUserId)

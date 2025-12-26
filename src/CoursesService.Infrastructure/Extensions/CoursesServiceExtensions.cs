@@ -1,11 +1,16 @@
 ﻿using Common.Kafka.Settings;
 using CoursesService.Application.AutoMapper;
-using CoursesService.Application.Services;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Lectures;
+using CoursesService.Domain.Interfaces.Clients.Payment;
+using CoursesService.Domain.Interfaces.Clients.Search;
+using CoursesService.Domain.Interfaces.Clients.Tests;
+using CoursesService.Domain.Interfaces.Courses;
+using CoursesService.Domain.Interfaces.Kafka;
 using CoursesService.Infrastructure.Data;
 using CoursesService.Infrastructure.gRPC.Clients;
 using CoursesService.Infrastructure.Kafka;
 using CoursesService.Infrastructure.Repos;
+using LecturesService.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +22,7 @@ using SearchService.Protos;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestsService.Protos;
 using AppCoursesService = CoursesService.Application.Services.CoursesService;
 
 namespace CoursesService.Infrastructure.Extensions
@@ -57,6 +63,8 @@ namespace CoursesService.Infrastructure.Extensions
             // Clients
             services.AddScoped<IPaymentClientForCourses, PaymentClientForCourses>();
             services.AddScoped<ISearchClientForCourses, SearchClientForCourses>();
+            services.AddScoped<ILecturesClientForCourses, LecturesClientForCourses>();
+            services.AddScoped<ITestsClientForCourses, TestsClientForCourses>();
             // Kafka
             services.AddSingleton<IKafkaProducerForCourses, KafkaProducerForCourses>();
 
@@ -122,6 +130,35 @@ namespace CoursesService.Infrastructure.Extensions
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
                 return handler;
             });
+
+            // Lectures Client
+            services.AddGrpcClient<LecturesApi.LecturesApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3007");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+
+            // Tests Client
+            services.AddGrpcClient<TestsApi.TestsApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3008");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+
 
             return services;
         }

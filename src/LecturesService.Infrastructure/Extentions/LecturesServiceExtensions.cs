@@ -13,6 +13,7 @@ using Prometheus.SystemMetrics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestsService.Protos;
 using AppLecturesService = LecturesService.Application.Services.LecturesService;
 
 namespace LecturesService.Infrastructure.Extentions
@@ -52,6 +53,7 @@ namespace LecturesService.Infrastructure.Extentions
             services.AddScoped<ILecturesService, AppLecturesService>();
             // Clients
             services.AddScoped<ICoursesClientForLectures, CoursesClientForLectures>();
+            services.AddScoped<ITestsClientForLectures, TestsClientForLectures>();
 
             // Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -82,6 +84,20 @@ namespace LecturesService.Infrastructure.Extentions
             services.AddGrpcClient<CoursesApi.CoursesApiClient>(o =>
             {
                 o.Address = new Uri("https://localhost:3004");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                // Ignore SSL 
+                handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+
+            // Tests Client
+            services.AddGrpcClient<TestsApi.TestsApiClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:3008");
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
             {

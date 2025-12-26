@@ -66,6 +66,7 @@ namespace TestsService.Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LectureId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -80,7 +81,8 @@ namespace TestsService.Infrastructure.Data.Migrations
                 {
                     b.HasOne("TestsService.Domain.Entities.Test", null)
                         .WithMany("Questions")
-                        .HasForeignKey("TestId");
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TestsService.Domain.Entities.Test", b =>

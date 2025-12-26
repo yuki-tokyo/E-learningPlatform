@@ -65,6 +65,24 @@ namespace TestsService.Infrastructure.Repos
             return deletedTests;
         }
 
+        public async Task DeleteTestsByCourseId(string courseId, string currentUserId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            await db.Tests
+                .Where(t => t.CourseId == courseId && t.AuthorId == currentUserId)
+                .ExecuteDeleteAsync();
+        }
+
+        public async Task DeleteTestsByLectureId(string lectureId, string currentUserId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            await db.Tests
+                .Where(t => t.LectureId == lectureId && t.AuthorId == currentUserId)
+                .ExecuteDeleteAsync();
+        }
+
         public async Task<Test?> GetTestById(string testId)
         {
             await using var db = await factory.CreateDbContextAsync();

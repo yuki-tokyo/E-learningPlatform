@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 using CoursesService.Domain.Entities;
-using CoursesService.Domain.Interfaces;
+using CoursesService.Domain.Interfaces.Clients.Search;
 using CoursesService.Infrastructure.Extensions;
 using Grpc.Core;
 using PaymentService.Protos;

@@ -10,12 +10,14 @@ namespace LecturesService.Application.Services
     public class LecturesService : ILecturesService
     {
         private readonly ICoursesClientForLectures coursesClient;
+        private readonly ITestsClientForLectures testsClient;
         private readonly ILecturesRepository repos;
 
-        public LecturesService(ICoursesClientForLectures coursesClient, ILecturesRepository repos)
+        public LecturesService(ICoursesClientForLectures coursesClient, ILecturesRepository repos, ITestsClientForLectures testsClient)
         {
             this.coursesClient = coursesClient;
             this.repos = repos;
+            this.testsClient = testsClient;
         }
         public async Task AddLecture(string courseId, string currentUserId, string name, string content)
         {
@@ -72,12 +74,19 @@ namespace LecturesService.Application.Services
 
         public async Task DeleteLecture(string lectureId, string currentUserId)
         {
+            await testsClient.DeleteTestsByLectureId(lectureId, currentUserId);
+
             var response = await repos.DeleteLecture(lectureId, currentUserId);
 
             if (response == 0)
             {
                 throw new LectureException("Лекция не найдена/не принадлежит вам.");
             }
+        }
+
+        public async Task DeleteLecturesByCourseId(string courseId, string currentUserId)
+        {
+            await repos.DeleteLecturesByCourseId(courseId, currentUserId);
         }
 
         public async Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId, string currentUserId)

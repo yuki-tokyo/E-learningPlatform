@@ -10,6 +10,15 @@ namespace TestsService.Infrastructure.Data
     {
         public TestsDb(DbContextOptions<TestsDb> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Test>()
+                .HasMany(t => t.Questions) 
+                .WithOne() 
+                .HasForeignKey(q => q.TestId) 
+                .OnDelete(DeleteBehavior.Cascade); 
+        }
+
         public DbSet<Test> Tests { get; set; }
         public DbSet<Question> Questions { get; set; }
     }

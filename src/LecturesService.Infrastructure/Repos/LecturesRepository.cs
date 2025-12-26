@@ -63,6 +63,15 @@ namespace LecturesService.Infrastructure.Repos
             return deletedLectures;
         }
 
+        public async Task DeleteLecturesByCourseId(string courseId, string currentUserId)
+        {
+            await using var db = await factory.CreateDbContextAsync();
+
+            var deletedLectures = await db.Lectures
+                .Where(l => l.CourseId == courseId && l.AuthorId == currentUserId)
+                .ExecuteDeleteAsync();
+        }
+
         public async Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId)
         {
             await using var db = await factory.CreateDbContextAsync();

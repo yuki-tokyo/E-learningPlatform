@@ -61,7 +61,15 @@ namespace AuthService.Application.Services
 
         public async Task<string> Register(string name, string email, string pass)
         {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
+                throw new ArgumentException("Имя/почта/пароль не могут быть пустыми!");
+
+            if (pass.Length < 8)
+                throw new ArgumentException("Слишком короткий пароль! (не менее 8 символов)", nameof(pass));
+
+
             var result = await repos.IsThisEmailRegistered(email);
+
             if (result)
             {
                 throw new UserAlreadyExistsException("Данный email уже занят.");

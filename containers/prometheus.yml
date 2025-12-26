@@ -75,6 +75,15 @@ scrape_configs:
         labels:
           service: 'tests-service'
 
+  - job_name: 'progress-api'
+    scheme: https                 
+    tls_config:
+      insecure_skip_verify: true 
+    static_configs:
+      - targets: ['host.docker.internal:3009']
+        labels:
+          service: 'progress-service'
+
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']

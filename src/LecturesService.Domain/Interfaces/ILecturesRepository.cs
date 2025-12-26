@@ -11,6 +11,7 @@ namespace LecturesService.Domain.Interfaces
         Task<int> ChangeLectureName(string lectureId, string currentUserId, string newName);
         Task<int> ChangeLectureContent(string lectureId, string currentUserId, string newContent);
         Task<int> DeleteLecture(string lectureId, string currentUserId);
+        Task DeleteLecturesByCourseId(string courseId, string currentUserId);
         Task<IEnumerable<Lecture>> GetAllLecturesForCourse(string courseId);
         Task<Lecture?> GetLectureById(string lectureId);
     }

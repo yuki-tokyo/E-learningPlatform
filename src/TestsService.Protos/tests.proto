@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto"; 
+
+option csharp_namespace = "TestsService.Protos";
+
+package tests;
+
+service TestsApi {
+  rpc DeleteTestsByCourseId (DeleteTestsByCourseIdRequest) returns (google.protobuf.Empty);
+  rpc DeleteTestsByLectureId (DeleteTestsByLectureIdRequest) returns (google.protobuf.Empty);
+}
+
+// Requests
+message DeleteTestsByCourseIdRequest {
+  string courseId = 1;
+  string userId = 2;
+}
+
+message DeleteTestsByLectureIdRequest {
+  string lectureId = 1;
+  string userId = 2;
+}

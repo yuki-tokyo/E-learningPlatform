@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
+using TestsService.Domain.Entities;
 using TestsService.Domain.Interfaces.Courses;
 using TestsService.Domain.Interfaces.Kafka;
 using TestsService.Domain.Interfaces.Lectures;
@@ -76,6 +77,18 @@ namespace TestsService.Application.Services
             {
                 throw new TestException("Тест не найден/не принадлежит вам.");
             }
+
+            await qrepos.DeleteQuestionsByTestId(testId, currentUserId);
+        }
+
+        public async Task DeleteTestsByCourseId(string courseId, string currentUserId)
+        {
+            await repos.DeleteTestsByCourseId(courseId, currentUserId);
+        }
+
+        public async Task DeleteTestsByLectureId(string lectureId, string currentUserId)
+        {
+            await repos.DeleteTestsByLectureId(lectureId, currentUserId);
         }
 
         public async Task<bool> PassTheTest(string testId, List<int> answers, string currentUserId)
